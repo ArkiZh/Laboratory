@@ -11,6 +11,7 @@
 
     <modules>
         <module>laboratory-common</module>
+        <module>laboratory-snippet</module>
     </modules>
 
 
