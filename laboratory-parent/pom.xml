@@ -12,6 +12,7 @@
     <modules>
         <module>laboratory-common</module>
         <module>laboratory-snippet</module>
+        <module>laboratory-crawler</module>
     </modules>
 
 
