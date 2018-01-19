@@ -13,6 +13,7 @@
         <module>laboratory-common</module>
         <module>laboratory-snippet</module>
         <module>laboratory-crawler</module>
+        <module>laboratory-servlet</module>
     </modules>
 
 

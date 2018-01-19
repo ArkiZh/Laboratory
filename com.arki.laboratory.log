@@ -4164,3 +4164,33 @@
 [DEBUG][2018/01/01 12:14:20914][org.apache.http.impl.conn.PoolingHttpClientConnectionManager.releaseConnection(PoolingHttpClientConnectionManager.java:348)]Connection released: [id: 0][route: {}->http://myproxy:8080->http://httpbin.org:80][total kept alive: 0; route allocated: 0 of 10; total allocated: 0 of 100]
 [DEBUG][2018/01/01 12:14:20914][org.apache.http.impl.conn.PoolingHttpClientConnectionManager.shutdown(PoolingHttpClientConnectionManager.java:408)]Connection manager is shutting down
 [DEBUG][2018/01/01 12:14:20915][org.apache.http.impl.conn.PoolingHttpClientConnectionManager.shutdown(PoolingHttpClientConnectionManager.java:414)]Connection manager shut down
+[INFO ][2018/01/15 15:59:59415][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTask$1.run(TimerTask.java:12)]=============== Hello!
+[INFO ][2018/01/15 16:00:00429][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTask$1.run(TimerTask.java:12)]=============== Hello!
+[INFO ][2018/01/15 16:00:01430][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTask$1.run(TimerTask.java:12)]=============== Hello!
+[INFO ][2018/01/15 16:00:02430][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTask$1.run(TimerTask.java:12)]=============== Hello!
+[INFO ][2018/01/15 16:00:03433][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTask$1.run(TimerTask.java:12)]=============== Hello!
+[INFO ][2018/01/15 16:00:04433][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTask$1.run(TimerTask.java:12)]=============== Hello!
+[INFO ][2018/01/15 16:00:05433][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTask$1.run(TimerTask.java:12)]=============== Hello!
+[INFO ][2018/01/15 16:00:06433][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTask$1.run(TimerTask.java:12)]=============== Hello!
+[INFO ][2018/01/15 16:00:07434][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTask$1.run(TimerTask.java:12)]=============== Hello!
+[INFO ][2018/01/15 16:07:1644 ][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$2.run(TimerTaskTest.java:47)]=============== Hello!!
+[INFO ][2018/01/15 16:07:16937][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$2.run(TimerTaskTest.java:47)]=============== Hello!!
+[INFO ][2018/01/15 16:07:17938][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$2.run(TimerTaskTest.java:47)]=============== Hello!!
+[INFO ][2018/01/15 16:07:18939][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$2.run(TimerTaskTest.java:47)]=============== Hello!!
+[INFO ][2018/01/15 16:07:19940][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$2.run(TimerTaskTest.java:47)]=============== Hello!!
+[INFO ][2018/01/15 16:07:20941][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$2.run(TimerTaskTest.java:47)]=============== Hello!!
+[INFO ][2018/01/15 16:07:21942][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$2.run(TimerTaskTest.java:47)]=============== Hello!!
+[INFO ][2018/01/15 16:07:22942][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$2.run(TimerTaskTest.java:47)]=============== Hello!!
+[INFO ][2018/01/15 16:07:23942][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$2.run(TimerTaskTest.java:47)]=============== Hello!!
+[INFO ][2018/01/15 16:07:24943][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$2.run(TimerTaskTest.java:47)]=============== Hello!!
+[INFO ][2018/01/15 16:11:01617][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$3.run(TimerTaskTest.java:73)]=============== Hello!!!
+[INFO ][2018/01/15 16:11:02492][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$3.run(TimerTaskTest.java:73)]=============== Hello!!!
+[INFO ][2018/01/15 16:11:03492][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$3.run(TimerTaskTest.java:73)]=============== Hello!!!
+[INFO ][2018/01/15 16:11:04492][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$3.run(TimerTaskTest.java:73)]=============== Hello!!!
+[INFO ][2018/01/15 16:11:05492][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$3.run(TimerTaskTest.java:73)]=============== Hello!!!
+[INFO ][2018/01/15 16:11:06492][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$3.run(TimerTaskTest.java:73)]=============== Hello!!!
+[INFO ][2018/01/15 16:11:07492][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$3.run(TimerTaskTest.java:73)]=============== Hello!!!
+[INFO ][2018/01/15 16:11:15154][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$3.run(TimerTaskTest.java:73)]=============== Hello!!!
+[INFO ][2018/01/15 16:11:1646 ][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$3.run(TimerTaskTest.java:73)]=============== Hello!!!
+[INFO ][2018/01/15 16:11:1747 ][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$3.run(TimerTaskTest.java:73)]=============== Hello!!!
+[INFO ][2018/01/15 16:11:1846 ][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.TimerTaskTest$3.run(TimerTaskTest.java:73)]=============== Hello!!!
