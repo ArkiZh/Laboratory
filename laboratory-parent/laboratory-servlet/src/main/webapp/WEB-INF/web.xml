@@ -15,14 +15,84 @@
     </context-param>
 
     <listener>
-        <listener-class>com.arki.servlet.SimpleServletContextListener</listener-class>
+        <listener-class>com.arki.listener.SimpleServletContextListener</listener-class>
     </listener>
-    <servlet>
-        <servlet-name>SimpleServlet</servlet-name>
-        <servlet-class>com.arki.servlet.SimpleServlet</servlet-class>
+
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>com.arki.filter.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    <filter>
+        <filter-name>LogFilter</filter-name>
+        <filter-class>com.arki.filter.LogFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LogFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>SimpleFilter</filter-name>
+        <filter-class>com.arki.filter.SimpleFilter</filter-class>
+        <init-param>
+            <param-name>name</param-name>
+            <param-value>simple</param-value>
+        </init-param>
+        <init-param>
+            <param-name>type</param-name>
+            <param-value>filter</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>SimpleFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+<!--    <servlet>
+        <servlet-name>ContextRootServlet</servlet-name>
+        <servlet-class>com.arki.servlet.ContextRootServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>SimpleServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <servlet-name>ContextRootServlet</servlet-name>
+        &lt;!&ndash;localhost:8080/&ndash;&gt;
+        <url-pattern>\"\"</url-pattern>&lt;!&ndash;Exactly maps to the application's context root&ndash;&gt;
+    </servlet-mapping>-->
+
+    <servlet>
+        <servlet-name>PrefixMatchServlet</servlet-name>
+        <servlet-class>com.arki.servlet.PrefixMatchServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PrefixMatchServlet</servlet-name>
+        <!--localhost:8080/prefixmatchservlet/example-->
+        <url-pattern>/prefixmatchservlet/*</url-pattern><!--Prefix match-->
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ExtensionMatchServlet</servlet-name>
+        <servlet-class>com.arki.servlet.ExtensionMatchServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExtensionMatchServlet</servlet-name>
+        <!--localhost:8080/extention/example.extension-->
+        <url-pattern>*.extension</url-pattern><!--Extension match-->
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DefaultServlet</servlet-name>
+        <servlet-class>com.arki.servlet.DefaultServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DefaultServlet</servlet-name>
+        <!--localhost:8080/default-->
+        <url-pattern>/</url-pattern><!--Default match-->
+    </servlet-mapping>
+
 </web-app>

@@ -15,8 +15,9 @@ public class SimpleServlet extends HttpServlet {
 
 
     @Override
-    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+    public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         Logger.info("Service method start...");
+        Logger.info("SimpleServlet hit!");
         ServletContext servletContext = req.getServletContext();
         Logger.info("Context path: [{}]", servletContext.getContextPath());
         super.service(req, res);

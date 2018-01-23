@@ -1,4 +1,4 @@
-package com.arki.servlet;
+package com.arki.listener;
 
 import com.arki.laboratory.common.Logger;
 
@@ -23,12 +23,12 @@ public class SimpleServletContextListener implements ServletContextListener{
             Logger.info("initParameter: [{}]=[{}]", s, initParameter);
         }
 
-        Logger.info("Servlet context initialization finished!!!");
+        Logger.info("Servlet context initialization finished!");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent event) {
         Logger.info("Servlet context destruction start...");
-        Logger.info("Servlet context destruction finished!!!");
+        Logger.info("Servlet context destruction finished!");
     }
 }
