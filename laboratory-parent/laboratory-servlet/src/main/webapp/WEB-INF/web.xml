@@ -65,34 +65,37 @@
         <url-pattern>\"\"</url-pattern>&lt;!&ndash;Exactly maps to the application's context root&ndash;&gt;
     </servlet-mapping>-->
 
+    <!--Prefix match-->
+    <!--localhost:8080/prefixmatchservlet/example-->
     <servlet>
         <servlet-name>PrefixMatchServlet</servlet-name>
         <servlet-class>com.arki.servlet.PrefixMatchServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>PrefixMatchServlet</servlet-name>
-        <!--localhost:8080/prefixmatchservlet/example-->
-        <url-pattern>/prefixmatchservlet/*</url-pattern><!--Prefix match-->
+        <url-pattern>/prefixmatchservlet/*</url-pattern>
     </servlet-mapping>
 
+    <!--Extension match-->
+    <!--localhost:8080/extention/example.extension-->
     <servlet>
         <servlet-name>ExtensionMatchServlet</servlet-name>
         <servlet-class>com.arki.servlet.ExtensionMatchServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ExtensionMatchServlet</servlet-name>
-        <!--localhost:8080/extention/example.extension-->
-        <url-pattern>*.extension</url-pattern><!--Extension match-->
+        <url-pattern>*.extension</url-pattern>
     </servlet-mapping>
 
-    <servlet>
+    <!--Default match-->
+    <!--localhost:8080/default-->
+    <!--<servlet>
         <servlet-name>DefaultServlet</servlet-name>
         <servlet-class>com.arki.servlet.DefaultServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DefaultServlet</servlet-name>
-        <!--localhost:8080/default-->
-        <url-pattern>/</url-pattern><!--Default match-->
-    </servlet-mapping>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>-->
 
 </web-app>

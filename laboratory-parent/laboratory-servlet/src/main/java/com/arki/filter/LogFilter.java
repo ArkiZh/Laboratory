@@ -4,6 +4,8 @@ import com.arki.laboratory.common.ArrayUtil;
 import com.arki.laboratory.common.Logger;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Map;
@@ -17,6 +19,11 @@ public class LogFilter  implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         Logger.info("LogFilter doFilter start...");
+        if(request instanceof HttpServletRequest){
+            HttpServletRequest httpRequest = (HttpServletRequest) request;
+            StringBuffer requestURL = httpRequest.getRequestURL();
+            Logger.info("Request URL: [{}]", requestURL);
+        }
         Enumeration<String> attributeNames = request.getAttributeNames();
         while (attributeNames.hasMoreElements()) {
             String attributeName = attributeNames.nextElement();
