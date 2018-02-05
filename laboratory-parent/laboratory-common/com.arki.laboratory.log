@@ -6,3 +6,7 @@
 [INFO ][2018/01/23 16:19:49103][com.arki.laboratory.common.Logger.info(Logger.java:33)][com.arki.laboratory.common.LoggerTest.testInfo(LoggerTest.java:10)]=============== Hello log.info(msg, arguments)  [success]
 [INFO ][2018/01/26 12:25:06633][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.common.LoggerTest.testInfo(LoggerTest.java:9)]=============== Hello log.info(msg)
 [INFO ][2018/01/26 12:25:06668][com.arki.laboratory.common.Logger.info(Logger.java:33)][com.arki.laboratory.common.LoggerTest.testInfo(LoggerTest.java:10)]=============== Hello log.info(msg, arguments)  [success]
+[INFO ][2018/01/28 13:51:45233][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.common.LoggerTest.testInfo(LoggerTest.java:9)]=============== Hello log.info(msg)
+[INFO ][2018/01/28 13:51:45278][com.arki.laboratory.common.Logger.info(Logger.java:33)][com.arki.laboratory.common.LoggerTest.testInfo(LoggerTest.java:10)]=============== Hello log.info(msg, arguments)  [success]
+[INFO ][2018/02/03 00:34:04426][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.common.LoggerTest.testInfo(LoggerTest.java:9)]=============== Hello log.info(msg)
+[INFO ][2018/02/03 00:34:04457][com.arki.laboratory.common.Logger.info(Logger.java:33)][com.arki.laboratory.common.LoggerTest.testInfo(LoggerTest.java:10)]=============== Hello log.info(msg, arguments)  [success]
