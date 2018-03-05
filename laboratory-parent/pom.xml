@@ -15,6 +15,7 @@
         <module>laboratory-crawler</module>
         <module>laboratory-servlet</module>
         <module>laboratory-spring</module>
+        <module>laboratory-activemq</module>
     </modules>
 
 
