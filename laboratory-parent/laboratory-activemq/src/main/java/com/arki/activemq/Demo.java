@@ -33,10 +33,18 @@ public class Demo {
     }
 
 
+    public static MessageConsumer createConsumer() throws JMSException {
+        Connection connection = connectionFactory.createConnection();
+        connection.start();
+        Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+        Queue queue = session.createQueue(queueName);
+        MessageConsumer consumer = session.createConsumer(queue);
+        return consumer;
+    }
+
 
     @Test
     public void publisher() throws JMSException, InterruptedException {
-
         Connection connection = connectionFactory.createConnection();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
@@ -45,33 +53,44 @@ public class Demo {
         producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
         for (int i = 0; i < publicCounts; i++) {
             Thread.sleep(1000);
-            Logger.info("Sending message..." + i);
-            producer.send(session.createTextMessage("Tick-tick..."+i));
+            String text = "Tick-tick-" + i;
+            Logger.info("Sending message...Content:[{}]", text);
+            producer.send(session.createTextMessage(text));
         }
         producer.close();
         Logger.info("Producer closed.");
-        session.close();
-        connection.close();
     }
 
     @Test
-    public void consumer() throws JMSException, InterruptedException {
-        Connection connection = connectionFactory.createConnection();
-        connection.start();
-        Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-        Queue queue = session.createQueue(queueName);
-        MessageConsumer consumer = session.createConsumer(queue);
-        for (int i = 0; i < receiveCounts; i++) {
-            //Thread.sleep(1000);
-            Message message = consumer.receive();
-            String result = message == null ? "NULL" : ((TextMessage) message).getText();
-            Logger.info("Receiving..." + result);
+    public void consumerWithListener() throws JMSException, InterruptedException {
+        MessageConsumer consumer = createConsumer();
+        consumer.setMessageListener(new MessageListener() {
+            @Override
+            public void onMessage(Message message) {
+                try {
+                    String result = message == null ? "NULL" : ((TextMessage) message).getText();
+                    Logger.info("Receiving by listener...Content:[{}]", result);
+                } catch (JMSException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        int i = 0;
+        while (true) {
+            Logger.info("Sleep for 10 seconds. Count: "+i++);
+            Thread.sleep(1000 * 10);
         }
-        consumer.close();
-        Logger.info("Consumer closed.");
-        session.close();
-        connection.close();
     }
 
+    @Test
+    public void consumerWithLoop() throws JMSException, InterruptedException {
+        MessageConsumer consumer = createConsumer();
+        int i = 0;
+        while (true) {
+            Message message = consumer.receive();
+            String result = message == null ? "NULL" : ((TextMessage) message).getText();
+            Logger.info("Receiving by loop..." + i++ + "...Content:[{}]", result);
+        }
+    }
 
 }
