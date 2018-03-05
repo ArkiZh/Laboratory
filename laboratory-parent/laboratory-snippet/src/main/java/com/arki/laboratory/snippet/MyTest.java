@@ -1,5 +1,7 @@
 package com.arki.laboratory.snippet;
 
+import com.arki.laboratory.common.ArrayUtil;
+import com.arki.laboratory.common.Logger;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
@@ -56,5 +58,31 @@ public class MyTest {
 		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
 		String appLimitDateStr = sdf2.format(null);
 		System.out.println("结果："+appLimitDateStr);
+	}
+
+	@Test
+	public void test2(){
+		int N = 2500;
+		Integer[] src = new Integer[N];
+		for (int i = 0; i < N; i++) {
+			src[i] = i;
+		}
+		Logger.info(ArrayUtil.transferArrayToString(src));
+		int len = src.length;
+		int start = 0;
+		int size = 0;
+
+		for (int i = 0; i < len; i++) {
+			size++;
+			if(size>=900||(start+size==len)){
+				Integer[] dest=new Integer[size];
+				System.arraycopy(src, start, dest, 0, size);
+				Logger.info(ArrayUtil.transferArrayToString(dest));
+				start+=size;
+				size=0;
+			}
+		}
+
+
 	}
 }
