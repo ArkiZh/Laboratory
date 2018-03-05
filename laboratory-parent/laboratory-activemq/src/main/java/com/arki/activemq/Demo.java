@@ -75,6 +75,10 @@ public class Demo {
                 }
             }
         });
+        /**
+         * “监听”有生命周期，在main方法里面或者 @Test 里面调用了之后，程序会立马接收，监听的生命周期也将结束，不会再起作用。
+         *  加入线程sleep后，main 或者@Test 就会被一直“挂起”，MessageListener也就可以正常使用了。
+         */
         int i = 0;
         while (true) {
             Logger.info("Sleep for 10 seconds. Count: "+i++);
