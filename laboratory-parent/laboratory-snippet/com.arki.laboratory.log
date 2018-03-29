@@ -901,3 +901,6 @@
 [INFO ][2018/03/23 17:44:22457][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.ReferenceTest.test1(ReferenceTest.java:35)]=============== A-->B-->null
 [INFO ][2018/03/23 17:44:22465][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.ReferenceTest.test1(ReferenceTest.java:36)]=============== null
 [INFO ][2018/03/23 17:44:22465][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.ReferenceTest.test1(ReferenceTest.java:38)]=============== B-->null
+[INFO ][2018/03/29 11:59:27115][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.ReferenceTest.test1(ReferenceTest.java:35)]=============== A-->B-->null
+[INFO ][2018/03/29 11:59:27141][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.ReferenceTest.test1(ReferenceTest.java:36)]=============== null
+[INFO ][2018/03/29 11:59:27141][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.ReferenceTest.test1(ReferenceTest.java:38)]=============== B-->null
