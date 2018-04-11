@@ -1,0 +1,1 @@
+[INFO ][2018/03/30 11:26:45418][com.arki.laboratory.common.Logger.info(Logger.java:16)][CommonTest.validRequiredFields(CommonTest.java:51)]=============== =============== 检测到必填字段“gender”为空
