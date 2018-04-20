@@ -3895,3 +3895,8 @@
 [INFO ][2018/04/12 10:35:28111][com.arki.laboratory.common.Logger.info(Logger.java:33)][com.arki.laboratory.snippet.SpecifyMethodInvokeTimeout.specifySleepTime(SpecifyMethodInvokeTimeout.java:40)]=============== Sleep start. 1000ms
 [INFO ][2018/04/12 10:35:29116][com.arki.laboratory.common.Logger.info(Logger.java:33)][com.arki.laboratory.snippet.SpecifyMethodInvokeTimeout.specifySleepTime(SpecifyMethodInvokeTimeout.java:42)]=============== Sleep end. 1000ms
 [INFO ][2018/04/12 10:35:29127][com.arki.laboratory.common.Logger.info(Logger.java:34)][com.arki.laboratory.snippet.SpecifyMethodInvokeTimeout.main(SpecifyMethodInvokeTimeout.java:25)]=============== Elapsed time: [1277.0]ms. Executed result: [Sleep 1000ms succeed.]
+[INFO ][2018/04/13 16:24:0182 ][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.StaticCodeBlockTest.<clinit>(StaticCodeBlockTest.java:8)]=============== Static code block executed.
+[INFO ][2018/04/13 16:24:14361][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.StaticCodeBlockTest.sayHi(StaticCodeBlockTest.java:20)]=============== Hi!
+[INFO ][2018/04/20 14:13:26292][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.StaticCodeBlockTest.<clinit>(StaticCodeBlockTest.java:8)]=============== Static code block executed.
+[INFO ][2018/04/20 14:13:26310][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.StaticCodeBlockTest.sayHi(StaticCodeBlockTest.java:21)]=============== Hi!
+[INFO ][2018/04/20 14:13:26311][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.StaticCodeBlockTest.<init>(StaticCodeBlockTest.java:12)]=============== Code block executed.
