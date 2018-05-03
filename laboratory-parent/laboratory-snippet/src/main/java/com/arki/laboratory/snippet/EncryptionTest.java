@@ -25,10 +25,10 @@ public class EncryptionTest {
     public static final String HMAC_SHA512 = "HmacSHA512";
 
 
-    public static void main(String[] args) {
-        String result = macCalculate("Zhang", HMAC_SHA256, "love");
-        System.out.println(result);
-    }
+//    public static void main(String[] args) {
+//        String result = macCalculate("Zhang", HMAC_SHA256, "love");
+//        System.out.println(result);
+//    }
 
     /**
      * Generate secret key for the specified mac type.
@@ -78,11 +78,32 @@ public class EncryptionTest {
         StringBuilder sb = new StringBuilder();
         for (int n = 0; bytes != null && n < bytes.length; n++) {
             String temp = Integer.toHexString(bytes[n] & 0XFF);
+            System.out.println(bytes[n] +" --> " + temp);
             if (temp.length() == 1)
                 sb.append('0');
             sb.append(temp);
         }
         return sb.toString();
+    }
+
+    private static String byteArrayToHexString1(byte[] bytes) {
+        char[] hexCode = "0123456789abcdef".toCharArray();
+        char[] hexChars = new char[bytes.length * 2];
+        for (int i = 0; i < bytes.length; i++) {
+            int temp = bytes[i] & 0xFF;
+            hexChars[i * 2] = hexCode[temp >>> 4];
+            hexChars[i * 2 + 1] = hexCode[temp & 0xF];
+        }
+        return new String(hexChars);
+    }
+
+    public static void main(String[] args) {
+        byte[] bytes = {-128,-2, -1, 0, 1, 2,127};
+        String s = byteArrayToHexString(bytes);
+        System.out.println(s);
+        String s1 = byteArrayToHexString1(bytes);
+        System.out.println(s1);
+
     }
 
 }
