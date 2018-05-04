@@ -16,6 +16,7 @@ public class SecureRandomTest {
      */
     public static String generateRandomLetterString(int length) {
         String letterStr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        int originSize = letterStr.length();
         SecureRandom random;
         try {
             random = SecureRandom.getInstance("SHA1PRNG");
@@ -25,7 +26,7 @@ public class SecureRandomTest {
         }
         StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
-            sb.append(letterStr.charAt(random.nextInt(52)));
+            sb.append(letterStr.charAt(random.nextInt(originSize)));
         }
         return sb.toString();
     }
