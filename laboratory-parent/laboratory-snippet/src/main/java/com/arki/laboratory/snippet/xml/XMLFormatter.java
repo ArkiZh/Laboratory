@@ -3,10 +3,7 @@ package com.arki.laboratory.snippet.xml;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,8 +83,10 @@ public class XMLFormatter {
 
 
     @XmlRootElement(name = "SCHOOL")
+    //指定由java对象生成xml文件时对java对象属性的访问方式。
+    @XmlAccessorType(XmlAccessType.PROPERTY)
     //设置xml节点生成顺序，按成员变量名称（不是重命名后的节点名称）排序，必须包含所有成员变量。
-    @XmlType(propOrder = {"schoolId","schoolName","address","classRoomCounts","classrooms"})
+    @XmlType(propOrder = {"schoolId","schoolName","address"/*,"classRoomCounts"*/,"classrooms"})
     private static class School {
         //@XmlElement(name = "SCHOOL_ID")
         // 重命名节点名称时，注解放到get方法上，放到成员变量上会报错：
@@ -123,6 +122,7 @@ public class XMLFormatter {
             this.address = address;
         }
 
+        @XmlTransient   //忽略classRoomCounts
         public int getClassRoomCounts() {
             return classRoomCounts;
         }
