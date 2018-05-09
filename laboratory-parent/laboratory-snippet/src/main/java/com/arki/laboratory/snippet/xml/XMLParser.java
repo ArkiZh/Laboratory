@@ -19,6 +19,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
 
+/**
+ * 将xml字符串转为实体
+ */
 public class XMLParser {
 
     private static String xmlExample = "<document><Status>False</Status><Remark>HMAC-SHA256</Remark></document>";
