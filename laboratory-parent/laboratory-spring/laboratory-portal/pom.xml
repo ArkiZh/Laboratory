@@ -12,6 +12,9 @@
     <artifactId>laboratory-portal</artifactId>
     <packaging>war</packaging>
 
+    <build>
+        <finalName>arkizh</finalName>
+    </build>
 
 
 </project>

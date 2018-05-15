@@ -42,6 +42,17 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.html</url-pattern>
+        <url-pattern>*.css</url-pattern>
+        <url-pattern>*.js</url-pattern>
+        <url-pattern>*.ico</url-pattern>
+        <url-pattern>*.swf</url-pattern>
+        <url-pattern>*.gif</url-pattern>
+        <url-pattern>*.jpeg</url-pattern>
+        <url-pattern>*.bmp</url-pattern>
+        <url-pattern>*.psd</url-pattern>
+        <url-pattern>*.jpg</url-pattern>
+        <url-pattern>*.png</url-pattern>
+        <url-pattern>*.htm</url-pattern>
         <!--<url-pattern>*.css</url-pattern>
         <url-pattern>*.js</url-pattern>
         <url-pattern>*.ico</url-pattern>
