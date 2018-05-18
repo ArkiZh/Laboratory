@@ -15,7 +15,7 @@ public class HtmlEntityDecode {
         System.out.println(s);
 
         //Need two steps:
-        //First, decode the tags.
+        //First, decode the basic notation, since the words have been encoded twice.
         String s1 = StringEscapeUtils.unescapeHtml4(htmlEntity);
         System.out.println(s1); //<Remark>&#38169;&#35823;&#65281;&#21442;&#25968;&#19981;&#36275;&#65281;</Remark>
         //Second, decode the words.
