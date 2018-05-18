@@ -82,7 +82,11 @@ public class MyTest {
 				size=0;
 			}
 		}
-
-
 	}
+	@Test
+    public void testNewInstance() throws IllegalAccessException, InstantiationException {
+        Class<String> clazz = String.class;
+        String s = clazz.newInstance();
+        System.out.println("Result:[" + s.toString() + "]");
+    }
 }

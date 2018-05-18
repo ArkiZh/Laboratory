@@ -5,6 +5,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.*;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +75,8 @@ public class XMLFormatter {
         //在root标签中添加xsi:schemaLocation属性：<school xsi:schemaLocation="def" xsi:noNamespaceSchemaLocation="abc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         //marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "def");
         marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);//去掉xml文件头：<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-
+        //添加监听器，使为null的属性值设为空值，字符串类型的改为"",对象类型的改为newInstance(),以解决为null时不生成标签的问题
+        marshaller.setListener(new DealNullValueListener());
         StringWriter writer = new StringWriter();
         marshaller.marshal(school, writer);
         System.out.println(writer.toString());
@@ -215,4 +217,56 @@ public class XMLFormatter {
         }
 
     }
+
+    private static class DealNullValueListener extends Marshaller.Listener {
+        /**
+         * <p/>
+         * Callback method invoked before marshalling from <tt>source</tt> to XML.
+         * <p/>
+         * <p/>
+         * This method is invoked just before marshalling process starts to marshal <tt>source</tt>.
+         * Note that if the class of <tt>source</tt> defines its own <tt>beforeMarshal</tt> method,
+         * the class specific callback method is invoked just before this method is invoked.
+         *
+         * @param source instance of JAXB mapped class prior to marshalling from it.
+         */
+        @Override
+        public void beforeMarshal(Object source) {
+            super.beforeMarshal(source);
+            Class<?> clazz = source.getClass();
+            Field[] declaredFields = clazz.getDeclaredFields();
+            for (int i = 0; i < declaredFields.length; i++) {
+                Field declaredField = declaredFields[i];
+                declaredField.setAccessible(true);
+                try {
+                    if (declaredField.get(source) == null) {
+                        Class<?> type = declaredField.getType();
+                        Object o = type.newInstance();
+                        declaredField.set(source, o);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        /**
+         * <p/>
+         * Callback method invoked after marshalling <tt>source</tt> to XML.
+         * <p/>
+         * <p/>
+         * This method is invoked after <tt>source</tt> and all its descendants have been marshalled.
+         * Note that if the class of <tt>source</tt> defines its own <tt>afterMarshal</tt> method,
+         * the class specific callback method is invoked just before this method is invoked.
+         *
+         * @param source instance of JAXB mapped class after marshalling it.
+         */
+        @Override
+        public void afterMarshal(Object source) {
+            super.afterMarshal(source);
+        }
+    }
+
 }
