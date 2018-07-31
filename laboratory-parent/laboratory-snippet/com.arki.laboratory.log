@@ -904,3 +904,6 @@
 [INFO ][2018/03/29 11:59:27115][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.ReferenceTest.test1(ReferenceTest.java:35)]=============== A-->B-->null
 [INFO ][2018/03/29 11:59:27141][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.ReferenceTest.test1(ReferenceTest.java:36)]=============== null
 [INFO ][2018/03/29 11:59:27141][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.ReferenceTest.test1(ReferenceTest.java:38)]=============== B-->null
+[INFO ][2018/07/31 14:39:45359][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.ThreadLocalTest.mapTest(ThreadLocalTest.java:20)]=============== {zh=zh, ang=ang}
+[INFO ][2018/07/31 14:40:19812][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.ThreadLocalTest.threadLocalTest(ThreadLocalTest.java:31)]=============== Li Lei
+[INFO ][2018/07/31 14:40:19824][com.arki.laboratory.common.Logger.info(Logger.java:16)][com.arki.laboratory.snippet.ThreadLocalTest.threadLocalTest(ThreadLocalTest.java:33)]=============== Han Mei

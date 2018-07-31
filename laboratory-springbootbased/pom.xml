@@ -10,5 +10,8 @@
 
 	<modules>
 		<module>laboratory-springboot</module>
+		<module>laboratory-eurekaserver</module>
+		<module>laboratory-serviceprovider</module>
+		<module>laboratory-ribbonconsumer</module>
 	</modules>
 </project>
