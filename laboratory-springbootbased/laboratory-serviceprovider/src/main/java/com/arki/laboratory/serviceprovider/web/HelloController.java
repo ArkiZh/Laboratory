@@ -1,7 +1,7 @@
-package com.arki.laboratory.ribbonconsumer.web;
+package com.arki.laboratory.serviceprovider.web;
 
-import com.arki.laboratory.ribbonconsumer.util.SpringUtil;
-import com.arki.laboratory.ribbonconsumer.bo.ApplicationInfo;
+import com.arki.laboratory.serviceprovider.util.SpringUtil;
+import com.arki.laboratory.serviceprovider.bo.ApplicationInfo;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

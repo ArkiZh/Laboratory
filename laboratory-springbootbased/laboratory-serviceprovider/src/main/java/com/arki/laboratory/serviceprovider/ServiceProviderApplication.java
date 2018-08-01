@@ -1,4 +1,4 @@
-package com.arki.laboratory.ribbonconsumer;
+package com.arki.laboratory.serviceprovider;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,9 +6,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-public class SpringbootApplication {
+public class ServiceProviderApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringbootApplication.class, args);
+		SpringApplication.run(ServiceProviderApplication.class, args);
 	}
 }

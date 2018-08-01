@@ -1,4 +1,4 @@
-package com.arki.laboratory.ribbonconsumer.util;
+package com.arki.laboratory.serviceprovider.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

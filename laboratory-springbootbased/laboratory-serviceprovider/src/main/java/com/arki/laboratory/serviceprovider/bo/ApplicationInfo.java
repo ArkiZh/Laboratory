@@ -1,4 +1,4 @@
-package com.arki.laboratory.ribbonconsumer.bo;
+package com.arki.laboratory.serviceprovider.bo;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
