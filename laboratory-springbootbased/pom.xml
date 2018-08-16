@@ -13,5 +13,6 @@
 		<module>laboratory-eurekaserver</module>
 		<module>laboratory-serviceprovider</module>
 		<module>laboratory-ribbonconsumer</module>
+		<module>laboratory-authority-jwt</module>
 	</modules>
 </project>
