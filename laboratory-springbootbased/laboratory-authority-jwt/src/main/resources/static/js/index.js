@@ -9,4 +9,14 @@ $(function(){
             }
         });
     });
+    $("#validateJwtButton").click(function () {
+        $.ajax({
+            url: $("#targetValidateUrl").val(),
+            type: "POST",
+            data: {jwtTokenToValidate: $("#jwtTokenToValidate").val()},
+            success: function (message) {
+                $("#validateJwtResult").html(message);
+            }
+        });
+    });
 });

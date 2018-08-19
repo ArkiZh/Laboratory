@@ -10,7 +10,12 @@
 Input username and password to get JWT.<br>
 username:&nbsp;<input id="username" name="username"><br>
 password:&nbsp;<input id="password" type="password" name="password"><br>
-<button id="jwtButton">Get JWT:&nbsp;</button><span id="jwtResult"></span><br>
-
+<button id="jwtButton">Get JWT:&nbsp;</button><span id="jwtResult" style="color: darkred;"></span><br>
+<hr>
+Validate JWT from the target service provider server.<br>
+url:<input id="targetValidateUrl" name="targetValidateUrl" value="http://localhost:8091/validate"><br>
+jwt:<input id="jwtTokenToValidate" name="jwtTokenToValidate"><br>
+<button id="validateJwtButton">Validate JWT:</button><span id="validateJwtResult" style="color: darkred;"></span><br>
+<hr>
 </body>
 </html>

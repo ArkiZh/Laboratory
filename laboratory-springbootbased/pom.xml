@@ -14,5 +14,6 @@
 		<module>laboratory-serviceprovider</module>
 		<module>laboratory-ribbonconsumer</module>
 		<module>laboratory-authority-jwt</module>
-	</modules>
+        <module>laboratory-serviceprovider-jwt</module>
+    </modules>
 </project>

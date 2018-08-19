@@ -2,6 +2,7 @@ package com.arki.laboratory.authority.jwt.controller;
 
 
 import com.arki.laboratory.authority.jwt.bean.UserInfo;
+import com.arki.laboratory.authority.jwt.util.Constant;
 import com.arki.laboratory.authority.jwt.util.JWTUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,8 +13,6 @@ import java.util.Map;
 
 @RestController
 public class JWTController {
-
-    private final String secretKey = "helloworld";
 
     @RequestMapping("/login")
     private String loginWithPassword(@RequestParam Map<String, String> paraMap) {
@@ -43,7 +42,7 @@ public class JWTController {
     private String generateJwt(String username) {
         Map<String, Object> paraMap = new HashMap<>();
         paraMap.put("username", username);
-        String token = JWTUtil.createToken(paraMap, secretKey);
+        String token = JWTUtil.createToken(paraMap, Constant.secretKey);
         return token;
     }
 
