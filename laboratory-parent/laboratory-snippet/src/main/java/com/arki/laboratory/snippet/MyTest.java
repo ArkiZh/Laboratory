@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,4 +90,16 @@ public class MyTest {
         String s = clazz.newInstance();
         System.out.println("Result:[" + s.toString() + "]");
     }
+
+    @Test
+	public void testTimePeriod() {
+		Calendar instance = Calendar.getInstance();
+		instance.set(Calendar.YEAR,2015);
+		instance.set(Calendar.MONTH,3);
+		instance.set(Calendar.DATE,15);
+		instance.set(Calendar.HOUR_OF_DAY,8);
+		long timeInMillis = instance.getTimeInMillis();
+		double v = (System.currentTimeMillis() - timeInMillis) / (3600.0 * 24 * 1000);
+		System.out.println(v);
+	}
 }
