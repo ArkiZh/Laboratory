@@ -54,7 +54,7 @@ public class LoadPropertiesTest {
                 }
                 path = URLDecoder.decode(path, "utf-8");
                 //int index = path.indexOf("WEB-INF/lib");
-                //InputStream is = new FileInputStream(new File(path.substring(0, index) + "WEB-INF/configuration/virtualPlatform.properties"));
+                //InputStream is = new FileInputStream(new File(path.substring(0, index) + "WEB-INF/configuration/xxx.properties"));
                 FileInputStream is = new FileInputStream(new File(path + "LoadProperties.properties"));
                 bundle = new PropertyResourceBundle(is);
             } catch (IOException e) {
