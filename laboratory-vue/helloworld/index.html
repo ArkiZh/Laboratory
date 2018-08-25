@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello world</title>
+    <style>
+        .redColor{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+ <h1>Hello world</h1>
+ <div id="vueDiv">
+     <h5>start: {{}} v-model v-show v-if</h5>
+     <div>
+         <input v-model="name"><span>你的名字：{{name}}</span>
+     </div>
+     <div>
+         <input v-model="age"><span v-show="age">你的年龄：{{age}}</span>
+     </div>
+     <div>
+         <input v-model="gender"><span v-if="gender">你的性别：{{gender}}</span>
+     </div>
+ </div>
+ <div id="vueDiv1">
+     <h5>v-for:</h5>
+     <ol>
+         <li v-for="todo in todos">{{todo.time}}:&nbsp;{{todo.thing}}&nbsp;￥{{todo.discount?todo.price*todo.discount:todo.price}}</li>
+         <li v-for="todo in todos">{{todo}}</li>
+     </ol>
+ </div>
+ <div id="vueDiv2">
+     <h5>v-bind:</h5>
+     <a v-bind:class="myClass" v-bind:href="targetURL">{{targetWebsite}}</a>
+     <h5 v-bind:class="{redColor: isRed}">我是红色{{isRed}}</h5>
+     <h5 :class="{redColor: isRed}">我是红色{{isRed}}</h5><!-- v-bind可省略，只写冒号 -->
+ </div>
+
+ <div id="vueDiv3">
+     <h5>v-on:</h5>
+     <button v-on:click="onClickMethod" v-on="{mouseenter:onEnter,mouseleave:onOut}">
+         <!--自定义的方法可传参，传参时如：v-on:click="onClickMethod('abc')"；不传参时也可写v-on:click="onClickMethod()"-->
+         v-on test: {{buttonName}} {{mouseAction}}
+     </button>
+ </div>
+
+ <script src="node_modules/vue/dist/vue.js"></script>
+ <script src="js/index.js"></script>
+</body>
+</html>
