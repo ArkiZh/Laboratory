@@ -15,5 +15,6 @@
 		<module>laboratory-ribbonconsumer</module>
 		<module>laboratory-authority-jwt</module>
         <module>laboratory-serviceprovider-jwt</module>
-    </modules>
+		<module>laboratory-springboot-quickstart</module>
+	</modules>
 </project>
