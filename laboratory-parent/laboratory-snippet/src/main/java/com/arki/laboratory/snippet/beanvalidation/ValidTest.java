@@ -1,6 +1,7 @@
 package com.arki.laboratory.snippet.beanvalidation;
 
 import javax.validation.*;
+import java.math.BigDecimal;
 import java.util.*;
 
 public class ValidTest {
@@ -29,7 +30,17 @@ public class ValidTest {
         printViolationSet(validateBean(carContainerElement));
 
         // Class level constraint.
+        CarClassLevel carClassLevel = new CarClassLevel();
+        carClassLevel.setSeatCount(1);
+        List<CarClassLevel.Person> passengers = carClassLevel.getPassengers();
+        passengers.add(new CarClassLevel.Person("Wang"));
+        passengers.add(new CarClassLevel.Person(" "));
+        passengers.add(null);
+        printViolationSet(validateBean(carClassLevel));
 
+        // Message interpolation.
+        CarMessageInterpolation carMessageInterpolation = new CarMessageInterpolation("A", "1", 1, 360, BigDecimal.valueOf(300000));
+        printViolationSet(validateBean(carMessageInterpolation));
     }
 
     /**
