@@ -20,13 +20,16 @@ public class ValidTest {
         CarContainerElement carContainerElement = new CarContainerElement();
         Map<FuelType, Integer> fuelConsumption = carContainerElement.getFuelConsumption();
         fuelConsumption.put(FuelType.GAS, 30);
-        fuelConsumption.put(FuelType.PETROL, 10);
+        fuelConsumption.put(FuelType.PETROL, 9);
         List<String> partList = carContainerElement.getPartList();
-        partList.add("A");
+        partList.add("a");
         Set<String> partSet = carContainerElement.getPartSet();
         partSet.add("A");
-        carContainerElement.setTowingCapacity(Optional.of(100));
+        carContainerElement.setTowingCapacity(Optional.of(9));
         printViolationSet(validateBean(carContainerElement));
+
+        // Class level constraint.
+
     }
 
     /**
