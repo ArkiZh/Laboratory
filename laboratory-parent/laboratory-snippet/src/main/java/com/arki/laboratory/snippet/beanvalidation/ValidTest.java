@@ -1,24 +1,70 @@
 package com.arki.laboratory.snippet.beanvalidation;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import java.util.Iterator;
-import java.util.Set;
+import javax.validation.*;
+import java.util.*;
 
 public class ValidTest {
     public static void main(String[] args) {
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-        Order order = new Order();
-        order.setAddress("a");
 
-        Set<ConstraintViolation<Order>> violations = validator.validate(order);
-        Iterator<ConstraintViolation<Order>> iterator = violations.iterator();
+        // Field level constraint.
+        CarFieldLevel carFieldLevel = new CarFieldLevel( null, "DD-AB-123", 4 );
+        Set<ConstraintViolation<CarFieldLevel>> constraintViolations = validateBean(carFieldLevel);
+        printViolationSet(constraintViolations);
+
+        // Property level constraint.
+        CarPropertyLevel carPropertyLevel = new CarPropertyLevel("Fox", false);
+        printViolationSet(validateBean(carPropertyLevel));
+
+        // Container element constraint.
+        CarContainerElement carContainerElement = new CarContainerElement();
+        Map<FuelType, Integer> fuelConsumption = carContainerElement.getFuelConsumption();
+        fuelConsumption.put(FuelType.GAS, 30);
+        fuelConsumption.put(FuelType.PETROL, 10);
+        List<String> partList = carContainerElement.getPartList();
+        partList.add("A");
+        Set<String> partSet = carContainerElement.getPartSet();
+        partSet.add("A");
+        carContainerElement.setTowingCapacity(Optional.of(100));
+        printViolationSet(validateBean(carContainerElement));
+    }
+
+    /**
+     * Initialize validatorFactory.
+     */
+    private static ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+
+    /**
+     * Validate bean.
+     * @param t
+     * @param <T>
+     * @return
+     */
+    private static <T> Set<ConstraintViolation<T>> validateBean(T t) {
+        Validator validator = validatorFactory.getValidator();
+        Set<ConstraintViolation<T>> violationSet = validator.validate(t);
+        return violationSet;
+    }
+
+    /**
+     * Print violation set.
+     * @param violationSet
+     * @param <T>
+     */
+    private static<T> void printViolationSet(Set<ConstraintViolation<T>> violationSet) {
+        Iterator<ConstraintViolation<T>> iterator = violationSet.iterator();
         while (iterator.hasNext()) {
-            ConstraintViolation<Order> violation = iterator.next();
+            ConstraintViolation<T> violation = iterator.next();
+            T rootBean = violation.getRootBean();
+            Path propertyPath = violation.getPropertyPath();
+            Object invalidValue = violation.getInvalidValue();
             String message = violation.getMessage();
-            System.out.println(message);
+            System.out.println("=============== "
+                    + "RootBean: " + String.valueOf(rootBean.getClass().getSimpleName())
+                    + "    " + "PropertyPath: " + String.valueOf(propertyPath)
+                    + "    " + "Value: " + String.valueOf(invalidValue)
+                    + "    " + "Message: " + message);
+
         }
     }
 }

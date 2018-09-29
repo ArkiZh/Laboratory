@@ -1,4 +1,5 @@
 package com.arki.laboratory.snippet.beanvalidation;
 
-public class Product {
+public enum FuelType {
+    GAS,PETROL
 }
