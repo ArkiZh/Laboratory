@@ -78,8 +78,40 @@ you may use the Hibernate Validator CDI portable extension by adding the followi
     object graphs (*cascaded validation*). To do so, just annotate a field or property representing a
     reference to another object with `@Valid`.
 2. Validating bean constraints
-
+    1. Obtaining a `Validator` instance  
+    The default way to get a validator is :
+    
+            ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+            Validator validator = validatorFactory.getValidator();
+            
+        In this way, classes in package `javax.validation` will scan the context ClassLoader 
+        to load classes which implement`ValidationProvider` interface, the `HibernateValidator` will be loaded.
+    2. Validator methods
+    
+           // Validator methods test.
+           // All return: Set<ConstraintViolation<T>>
+           Validator validator = validatorFactory.getValidator();
+           // Validate the bean.
+           validator.validate(carFieldLevel);
+           // Validate the property.
+           validator.validateProperty(carFieldLevel,"manufacturer");
+           // Validate whether the value is valid for the specific class property.
+           validator.validateValue(CarFieldLevel.class, "seatCount", 1);
+           
+    3. Constraint violations  
+    Determine the case of the validation failure.
+    
 3. Declaring and validating method constraints  
+   As of Bean Validation 1.1, constraints can not only be applied to JavaBeans and their properties,
+   but also to the parameters and return values of the methods and constructors of any Java type.
+   That way Bean Validation constraints can be used to specify
+   + the preconditions that must be satisfied by the caller before a method or constructor may
+     be invoked (by applying constraints to the parameters of an executable)
+   + the postconditions that are guaranteed to the caller after a method or constructor
+     invocation returns (by applying constraints to the return value of an executable)
+
+
+
 
 4. Interpolating constraint error messages
     1. Message parameters are string literals enclosed in {}, while message expressions are string literals enclosed in ${}.  
@@ -105,7 +137,8 @@ you may use the Hibernate Validator CDI portable extension by adding the followi
         4. Resolve any message expressions by evaluating them as expressions of the Unified
            Expression Language (Unified EL).
     2. Special characters  
-    Since the characters {, } and $ have a special meaning in message descriptors, they need to be escaped if you want to use them literally. The following rules apply:
+    Since the characters {, } and $ have a special meaning in message descriptors, 
+    they need to be escaped if you want to use them literally. The following rules apply:
         + \\{ is considered as the literal {
         + \\} is considered as the literal }
         + \\$ is considered as the literal $

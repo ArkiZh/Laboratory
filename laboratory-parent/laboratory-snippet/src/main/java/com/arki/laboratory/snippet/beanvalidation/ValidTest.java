@@ -41,6 +41,12 @@ public class ValidTest {
         // Message interpolation.
         CarMessageInterpolation carMessageInterpolation = new CarMessageInterpolation("A", "1", 1, 360, BigDecimal.valueOf(300000));
         printViolationSet(validateBean(carMessageInterpolation));
+
+        // Validator methods test.
+        Validator validator = validatorFactory.getValidator();
+        printViolationSet(validator.validate(carFieldLevel));
+        printViolationSet(validator.validateProperty(carFieldLevel,"manufacturer"));
+        printViolationSet(validator.validateValue(CarFieldLevel.class, "seatCount", 1));
     }
 
     /**
@@ -55,17 +61,20 @@ public class ValidTest {
      * @return
      */
     private static <T> Set<ConstraintViolation<T>> validateBean(T t) {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();
         Set<ConstraintViolation<T>> violationSet = validator.validate(t);
         return violationSet;
     }
 
+    private static int printCount = 0;
     /**
      * Print violation set.
      * @param violationSet
      * @param <T>
      */
     private static<T> void printViolationSet(Set<ConstraintViolation<T>> violationSet) {
+        System.out.println("=============== Print count: " + (++printCount));
         Iterator<ConstraintViolation<T>> iterator = violationSet.iterator();
         while (iterator.hasNext()) {
             ConstraintViolation<T> violation = iterator.next();
@@ -74,7 +83,7 @@ public class ValidTest {
             Object invalidValue = violation.getInvalidValue();
             String message = violation.getMessage();
             System.out.println("=============== "
-                    + "RootBean: " + String.valueOf(rootBean.getClass().getSimpleName())
+                    + "RootBean: " + String.valueOf(rootBean == null ? null : rootBean.getClass().getSimpleName())
                     + "    " + "PropertyPath: " + String.valueOf(propertyPath)
                     + "    " + "Value: " + String.valueOf(invalidValue)
                     + "    " + "Message: " + message);
