@@ -110,9 +110,6 @@ you may use the Hibernate Validator CDI portable extension by adding the followi
    + the postconditions that are guaranteed to the caller after a method or constructor
      invocation returns (by applying constraints to the return value of an executable)
 
-
-
-
 4. Interpolating constraint error messages
     1. Message parameters are string literals enclosed in {}, while message expressions are string literals enclosed in ${}.  
     The following algorithm is applied during method interpolation:
