@@ -1,6 +1,8 @@
 package com.arki.laboratory.snippet.beanvalidation;
 
 import javax.validation.*;
+import javax.validation.executable.ExecutableValidator;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -47,6 +49,25 @@ public class ValidTest {
         printViolationSet(validator.validate(carFieldLevel));
         printViolationSet(validator.validateProperty(carFieldLevel,"manufacturer"));
         printViolationSet(validator.validateValue(CarFieldLevel.class, "seatCount", 1));
+
+        // Valid method invocation.
+        ExecutableValidator executableValidator = validatorFactory.getValidator().forExecutables();
+        RentalStation rentalStation = new RentalStation("Arki");
+        Method rentCar = null;
+        try {
+            rentCar = RentalStation.class.getMethod("rentCar",Customer.class,Date.class,int.class);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        Set<ConstraintViolation<RentalStation>> constraintViolationSet = executableValidator.validateParameters(
+                rentalStation,
+                rentCar,
+                new Object[]{new Customer(), new Date(), 0});
+        printViolationSet(constraintViolationSet);
+        Set<ConstraintViolation<RentalStation>> constraintViolationSet1 = executableValidator.validateReturnValue(rentalStation,
+                rentCar,
+                new Object[]{new Customer(), new Date(), 0});
+        printViolationSet(constraintViolationSet1);
     }
 
     /**
