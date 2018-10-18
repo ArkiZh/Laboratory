@@ -50,24 +50,41 @@ public class ValidTest {
         printViolationSet(validator.validateProperty(carFieldLevel,"manufacturer"));
         printViolationSet(validator.validateValue(CarFieldLevel.class, "seatCount", 1));
 
-        // Valid method invocation.
+        // Valid parameter constraints.
         ExecutableValidator executableValidator = validatorFactory.getValidator().forExecutables();
         RentalStation rentalStation = new RentalStation("Arki");
         Method rentCar = null;
         try {
-            rentCar = RentalStation.class.getMethod("rentCar",Customer.class,Date.class,int.class);
+            rentCar = RentalStation.class.getMethod("rentCar", RentalStation.Customer.class,Date.class,int.class);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
         Set<ConstraintViolation<RentalStation>> constraintViolationSet = executableValidator.validateParameters(
                 rentalStation,
                 rentCar,
-                new Object[]{new Customer(), new Date(), 0});
+                new Object[]{new RentalStation.Customer(), new Date(), 0});
         printViolationSet(constraintViolationSet);
+
+        // Valid return value.
         Set<ConstraintViolation<RentalStation>> constraintViolationSet1 = executableValidator.validateReturnValue(rentalStation,
                 rentCar,
-                new Object[]{new Customer(), new Date(), 0});
+                rentalStation.rentCar(new RentalStation.Customer(), new Date(System.currentTimeMillis()), 0));
         printViolationSet(constraintViolationSet1);
+
+        // Valid cross parameter constraints.
+        RentalStation.Car car = new RentalStation.Car("Fox");
+        car.load(1,3);
+        Method load = null;
+        try {
+            load = RentalStation.Car.class.getMethod("load", int.class, int.class);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        Set<ConstraintViolation<RentalStation.Car>> constraintViolationSet2 = executableValidator.validateParameters(car,
+                load,
+                new Object[]{1, 3});
+        printViolationSet(constraintViolationSet2);
+
     }
 
     /**
