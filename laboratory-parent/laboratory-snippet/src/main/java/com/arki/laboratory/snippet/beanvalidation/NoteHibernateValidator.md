@@ -109,7 +109,92 @@ you may use the Hibernate Validator CDI portable extension by adding the followi
      be invoked (by applying constraints to the parameters of an executable)
    + the postconditions that are guaranteed to the caller after a method or constructor
      invocation returns (by applying constraints to the return value of an executable)
-
+   1. Validate each single parameter  
+      *Declare the annotation before each annotation.*
+   
+          public boolean rentCar(@NotNull Customer customer, 
+                                 @NotNull @FutureOrPresent Date startDate, 
+                                 @Min(1) int durationInDays) {
+              return false;
+          }
+   
+   2. Validate cross parameter constraints  
+      *Declare the annotation at method or constructor level.*
+      
+          @LuggageCountMatchesPassengerCount(piecesOfLuggagesPerPassenger = 2)
+          public void load(int passengerCount, int luggageCount){
+              ...
+          }
+       
+      Since return value constraints and cross-parameter constraints are both declared on the method level,
+      the constraint target is configured in the `ConstraintValidator` implementation using the `@SupportedValidationTarget` annotation.
+       
+          @SupportedValidationTarget(ValidationTarget.PARAMETERS)
+          public class LuggageCountMatchesPassengerCountValidator implements ConstraintValidator<LuggageCountMatchesPassengerCount, Object[]> {
+              private int piecesOfLuggagesPerPassenger;
+          
+              @Override
+              public void initialize(LuggageCountMatchesPassengerCount constraintAnnotation) {
+                  this.piecesOfLuggagesPerPassenger = constraintAnnotation.piecesOfLuggagesPerPassenger();
+              }
+          
+              @Override
+              public boolean isValid(Object[] value, ConstraintValidatorContext context) {
+                  int passengerCount = (int) value[0];
+                  int luggageCount = (int) value[1];
+                  return luggageCount <= passengerCount * piecesOfLuggagesPerPassenger;
+              }
+          }
+      
+      In some cases a constraint can be applied to an executable’s parameters (i.e. it is a crossparameter
+      constraint), but also to the return value. One example for this are custom constraints
+      which allow to specify validation rules using expression or script languages.
+      Such constraints must define a member `validationAppliesTo()` which can be used at
+      declaration time to specify the constraint target.  For example:   
+      `validationAppliesTo = ConstraintTarget.PARAMETERS`: Apply the constraint to an executable’s parameters.  
+      `ConstraintTarget.RETURN_VALUE`:  Apply the constraint to the executable return value.
+       
+          @ELAssert(expression = "...", validationAppliesTo = ConstraintTarget.PARAMETERS)
+          public Car buildCar(List<Part> parts) {
+              //...
+              return null;
+          }
+          @ELAssert(expression = "...", validationAppliesTo = ConstraintTarget.RETURN_VALUE)
+          public Car paintCar(int color) {
+              //...
+              return null;
+          }
+       
+   3. Validate return value  
+      *Declare the annotation at method or constructor level.*
+      
+          //Any newly created RentalStation object must satisfy the @ValidRentalStation constraint
+          @ValidRentalStation 
+          public RentalStation() {
+              //...
+          }
+      
+          @AssertTrue
+          public boolean rentCar(Customer customer, Date startDate, int durationInDays) {
+              System.out.println("You can rent car.");
+              return false;
+          }
+      
+   4. Cascaded validation  
+      *Similar to the cascaded validation of JavaBeans properties, When validating a parameter or return value annotated with @Valid,
+      the constraints declared on the parameter or return value object are validated as well.*  
+      In particular, `null` values are ignored during cascaded validation (naturally this can’t happen
+      during constructor return value validation) and cascaded validation is performed recursively, i.e.
+      if a parameter or return value object which is marked for cascaded validation itself has
+      properties marked with `@Valid`, the constraints declared on the referenced elements will be
+      validated as well.
+      
+   5. Method constraints in inheritance hierarchies
+      + The preconditions to be satisfied by the caller of a method may not be strengthened in subtypes.
+      + The postconditions guaranteed to the caller of a method may not be weakened in subtypes.
+      + 即：有继承关系时，参数校验的约束只能定义在父类或接口里；  
+        返回值校验约束既可以定义在父类或接口上，也可以定义在自身上，都会起作用。
+      
 4. Interpolating constraint error messages
     1. Message parameters are string literals enclosed in {}, while message expressions are string literals enclosed in ${}.  
     The following algorithm is applied during method interpolation:

@@ -50,7 +50,7 @@ public class ValidTest {
         printViolationSet(validator.validateProperty(carFieldLevel,"manufacturer"));
         printViolationSet(validator.validateValue(CarFieldLevel.class, "seatCount", 1));
 
-        // Valid parameter constraints.
+        // Validate parameter constraints.
         ExecutableValidator executableValidator = validatorFactory.getValidator().forExecutables();
         RentalStation rentalStation = new RentalStation("Arki");
         Method rentCar = null;
@@ -65,13 +65,7 @@ public class ValidTest {
                 new Object[]{new RentalStation.Customer(), new Date(), 0});
         printViolationSet(constraintViolationSet);
 
-        // Valid return value.
-        Set<ConstraintViolation<RentalStation>> constraintViolationSet1 = executableValidator.validateReturnValue(rentalStation,
-                rentCar,
-                rentalStation.rentCar(new RentalStation.Customer(), new Date(System.currentTimeMillis()), 0));
-        printViolationSet(constraintViolationSet1);
-
-        // Valid cross parameter constraints.
+        // Validate cross parameter constraints.
         RentalStation.Car car = new RentalStation.Car("Fox");
         car.load(1,3);
         Method load = null;
@@ -84,6 +78,14 @@ public class ValidTest {
                 load,
                 new Object[]{1, 3});
         printViolationSet(constraintViolationSet2);
+
+        // Valid return value.
+        Set<ConstraintViolation<RentalStation>> constraintViolationSet1 = executableValidator.validateReturnValue(rentalStation,
+                rentCar,
+                rentalStation.rentCar(new RentalStation.Customer(), new Date(System.currentTimeMillis()), 0));
+        printViolationSet(constraintViolationSet1);
+
+
 
     }
 

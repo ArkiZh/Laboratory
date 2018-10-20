@@ -12,8 +12,8 @@ public class RentalStation {
     public RentalStation(@NotNull String name) {
         this.name = name;
     }
-
-    public @AssertTrue boolean rentCar(@NotNull Customer customer, @NotNull @FutureOrPresent Date startDate, @Min(1) int durationInDays) {
+    @AssertTrue
+    public boolean rentCar(@NotNull Customer customer, @NotNull @FutureOrPresent Date startDate, @Min(1) int durationInDays) {
         System.out.println("You can rent car.");
         return false;
     }

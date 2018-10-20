@@ -1,7 +1,5 @@
 package com.arki.laboratory.snippet.beanvalidation.annotation;
 
-import com.arki.laboratory.snippet.beanvalidation.RentalStation;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.constraintvalidation.SupportedValidationTarget;
