@@ -40,9 +40,18 @@ public class ValidTest {
         passengers.add(null);
         printViolationSet(validateBean(carClassLevel));
 
+        // Abstract-annotation class level constraint.
+        // The ValidCarBeanReal extends ValidCarBean.
+        // Used by ValidCarBeanAnnotation: @Constraint(validatedBy = ValidCarBeanReal.class)
+        CarClassLevelAbstract carClassLevelAbstract = new CarClassLevelAbstract();
+        carClassLevelAbstract.setDriverName("A");
+        carClassLevelAbstract.setSeatCount(2);
+        printViolationSet(validateBean(carClassLevelAbstract));
+
         // Message interpolation.
         CarMessageInterpolation carMessageInterpolation = new CarMessageInterpolation("A", "1", 1, 360, BigDecimal.valueOf(300000));
         printViolationSet(validateBean(carMessageInterpolation));
+
 
         // Validator methods test.
         Validator validator = validatorFactory.getValidator();
@@ -101,7 +110,6 @@ public class ValidTest {
      * @return
      */
     private static <T> Set<ConstraintViolation<T>> validateBean(T t) {
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();
         Set<ConstraintViolation<T>> violationSet = validator.validate(t);
         return violationSet;
