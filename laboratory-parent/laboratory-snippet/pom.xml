@@ -120,6 +120,13 @@
             <version>2.1.0.1</version>
         </dependency>
 
+        <!-- Oracle driver installed manually -->
+        <dependency>
+            <groupId>com.oracle.jdbc</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.4</version>
+        </dependency>
+
     </dependencies>
 
 
