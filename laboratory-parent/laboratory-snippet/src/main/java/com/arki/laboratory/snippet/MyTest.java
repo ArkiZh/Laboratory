@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -101,5 +103,21 @@ public class MyTest {
 		long timeInMillis = instance.getTimeInMillis();
 		double v = (System.currentTimeMillis() - timeInMillis) / (3600.0 * 24 * 1000);
 		System.out.println(v);
+	}
+
+	@Test
+	public void testRegex(){
+		String a = "a01_";
+		System.out.println(Pattern.matches("[a-zA-Z][a-zA-Z0-9_#$]*", a));
+		StringBuilder sb = new StringBuilder();
+		sb.append(a);
+		for (int i = 0; i < 10; i++) {
+			sb.append(sb);
+			System.out.println("=== count " + i+"   length "+sb.length());
+			System.out.println(sb.toString());
+			long startTime = System.currentTimeMillis();
+			boolean match = Pattern.matches("[a-zA-Z][a-zA-Z0-9_#$]*", sb.toString());
+			System.out.println("=== match " + match + "   time " + (System.currentTimeMillis() - startTime));
+		}
 	}
 }
