@@ -52,4 +52,12 @@ var vueApp3 = new Vue({
     }
 });
 
+var vueApp4= new Vue({
+    el:"#vueDiv4",
+    data:{
+        name:"v-model test",
+        age:10
+    }
+})
+
 

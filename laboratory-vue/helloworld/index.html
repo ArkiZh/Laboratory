@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Hello world</title>
@@ -45,6 +45,14 @@
      </button>
  </div>
 
+ <div id="vueDiv4">
+     <h5>v-model:</h5>
+     <input type="text" v-model="name">正常加载v-model<br>
+     <input type="text" v-model.lazy="name">惰性加载v-model.lazy<br>
+     <input type="text" v-model.trim="name">去空格v-model.trim<br>
+     内容：<pre>[{{name}}]</pre><br>
+     <input type="text" v-model.number="age">转数字v-model.number [{{age}}]
+ </div>
  <script src="node_modules/vue/dist/vue.js"></script>
  <script src="js/index.js"></script>
 </body>
