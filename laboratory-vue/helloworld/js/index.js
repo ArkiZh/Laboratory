@@ -56,7 +56,12 @@ var vueApp4= new Vue({
     el:"#vueDiv4",
     data:{
         name:"v-model test",
-        age:10
+        age:10,
+        gender:"male",
+        hobby:["Ping-pong","Skate"],
+        article:"I come from Mar.",
+        home:"Mars",
+        destination:["Moon","Sea"]
     }
 })
 

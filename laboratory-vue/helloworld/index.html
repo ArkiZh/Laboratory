@@ -51,7 +51,32 @@
      <input type="text" v-model.lazy="name">惰性加载v-model.lazy<br>
      <input type="text" v-model.trim="name">去空格v-model.trim<br>
      内容：<pre>[{{name}}]</pre><br>
-     <input type="text" v-model.number="age">转数字v-model.number [{{age}}]
+
+     <input type="text" v-model.number="age">转数字v-model.number [{{age}}]<br>
+
+     <label>男<input v-model="gender" type="radio" value="male"></label>
+     <label>女<input v-model="gender" type="radio" value="female"></label>
+     内容：[{{gender}}]<br>
+
+     <label>乒乓球<input v-model="hobby" type="checkbox" value="Ping-pong"></label>
+     <label>滑冰<input v-model="hobby" type="checkbox" value="Skate"></label>
+     内容：[{{hobby}}]<br>
+
+     <textarea v-model="article"></textarea>内容：[{{article}}]<br>
+
+     你来自哪里？
+     <select v-model="home">
+         <option value="Mars">火星</option>
+         <option value="Earth">地球</option>
+     </select>
+     内容：[{{home}}]<br>
+     你要去哪里？
+     <select v-model="destination" multiple="multiple">
+         <option value="Moon">月球</option>
+         <option value="Sun">太阳</option>
+         <option value="Sea">海洋</option>
+     </select>
+     内容：[{{destination}}]<br>
  </div>
  <script src="node_modules/vue/dist/vue.js"></script>
  <script src="js/index.js"></script>
