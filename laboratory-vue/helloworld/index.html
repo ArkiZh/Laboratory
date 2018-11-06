@@ -78,6 +78,45 @@
      </select>
      内容：[{{destination}}]<br>
  </div>
+ <div id="vueDiv5">
+     <h5>控制流指令v-if:</h5>
+     选择角色：
+     <select v-model="currentRole">
+         <option v-for="role in roles">{{role}}</option>
+     </select><br>
+     <div v-if="currentRole=='员工'">恭喜你，放假了！</div>
+     <div v-else-if="currentRole=='HR'">今天多招点人！</div>
+     <div v-else-if="currentRole=='管理员'">我是管理员！</div>
+ </div>
+ <div id="vueDiv6">
+     <h5>计算属性computed</h5>
+     <table border="1">
+         <thead>
+         <th>科目</th>
+         <th>分数</th>
+         </thead>
+         <tbody>
+         <tr v-for="scoreInfo in scoreInfoArray">
+             <td>{{scoreInfo.course}}</td>
+             <td>{{scoreInfo.score}}</td>
+         </tr>
+         <!--data中引用不到computed中的属性-->
+         <!--<tr v-for="statistics in statisticsArray">
+             <td>{{statistics.category}}</td>
+             <td>{{statistics.score}}</td>
+         </tr>-->
+         <tr>
+             <td>总分</td>
+             <td>{{sum}}</td>
+         </tr>
+         <tr>
+             <td>平均分</td>
+             <td>{{average}}</td>
+         </tr>
+         </tbody>
+
+     </table>
+ </div>
  <script src="node_modules/vue/dist/vue.js"></script>
  <script src="js/index.js"></script>
 </body>

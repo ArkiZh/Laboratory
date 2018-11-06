@@ -63,6 +63,47 @@ var vueApp4= new Vue({
         home:"Mars",
         destination:["Moon","Sea"]
     }
+});
+
+var vueApp5= new Vue({
+   el:"#vueDiv5",
+   data:{
+       roles:["HR","管理员","员工"],
+       currentRole:"员工"
+   }
+});
+
+var vueApp6=new Vue({
+    el:"#vueDiv6",
+    data:{
+        scoreInfoArray:[{
+            course:"数学",
+            score:100
+        },{
+            course:"英语",
+            score:90
+        },{
+            course:"物理",
+            score:99
+        }]/*,
+        statisticsArray:[{
+            category:"总分",
+            score:this.sum //引用不到computed中的属性
+        },{
+            category:"平均分",
+            score:this.average
+        }]*/
+    },
+    computed:{
+        sum:function () {
+            var temp = 0;
+            for (var i in this.scoreInfoArray) {
+                temp = temp + parseFloat(this.scoreInfoArray[i].score);
+            }
+            return temp;
+        },
+        average:function () {
+            return Math.round(this.sum/this.scoreInfoArray.length);
+        }
+    }
 })
-
-
