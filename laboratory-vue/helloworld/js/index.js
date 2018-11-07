@@ -1,4 +1,4 @@
-
+/*start: {{}} v-model v-show v-if*/
 var vueApp = new Vue({
     el:"#vueDiv",
     data: {
@@ -8,6 +8,7 @@ var vueApp = new Vue({
     }
 });
 
+/*v-for*/
 var vueApp1 = new Vue({
     el: "#vueDiv1",
     data: {
@@ -19,6 +20,7 @@ var vueApp1 = new Vue({
     }
 });
 
+/*v-bind*/
 var vueApp2 = new Vue({
     el: "#vueDiv2",
     data: {
@@ -29,6 +31,7 @@ var vueApp2 = new Vue({
     }
 });
 
+/*v-on*/
 var vueApp3 = new Vue({
     el: "#vueDiv3",
     data: {
@@ -52,6 +55,7 @@ var vueApp3 = new Vue({
     }
 });
 
+/*v-model*/
 var vueApp4= new Vue({
     el:"#vueDiv4",
     data:{
@@ -65,6 +69,7 @@ var vueApp4= new Vue({
     }
 });
 
+/*控制流指令v-if*/
 var vueApp5= new Vue({
    el:"#vueDiv5",
    data:{
@@ -73,6 +78,7 @@ var vueApp5= new Vue({
    }
 });
 
+/*计算属性*/
 var vueApp6=new Vue({
     el:"#vueDiv6",
     data:{
@@ -107,3 +113,29 @@ var vueApp6=new Vue({
         }
     }
 })
+
+/*全局及局部组件*/
+//组件名到页面中都转成了小写的
+//vue.js:597 [Vue warn]: Unknown custom element: <alertpublic> - did you register the component correctly?
+Vue.component("alert_public", {
+    template: "<button @click='on_click_public'>全局组件按钮</button>",
+    methods: {
+        on_click_public: function () {
+            alert("Hello 全局的！");
+        }
+    }
+});
+var alertPrivateComponent={
+    alert_private:{
+        template: "<button @click='on_click_private'>局部组件按钮</button>",
+        methods:{
+            on_click_private: function () {
+                alert("Hello 局部的！");
+            }
+        }
+    }
+};
+var vueApp7 = new Vue({
+    el:"#vueDiv7",
+    components:alertPrivateComponent
+});
