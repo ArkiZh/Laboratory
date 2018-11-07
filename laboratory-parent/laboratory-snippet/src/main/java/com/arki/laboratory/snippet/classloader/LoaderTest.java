@@ -26,10 +26,10 @@ public class LoaderTest {
                 }
             }
         };
-        System.out.println("Custom class loader:  " + myClassLoader.getClass());
+        System.out.println("Custom class loader : " + myClassLoader.getClass());
 
         Class<?> clazz = myClassLoader.loadClass("com.arki.laboratory.snippet.classloader.LoaderTest");
-        System.out.println("Class name loaded by custom class loader:  " + clazz);
+        System.out.println("Class name loaded by custom class loader : " + clazz);
         System.out.println("Class name loaded by default class loader: " + LoaderTest.class);
         Object o = clazz.newInstance();
         System.out.println("Is custom loaded object instance of default LoaderTest? " + (o instanceof LoaderTest));
