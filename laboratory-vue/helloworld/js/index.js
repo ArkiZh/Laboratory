@@ -139,3 +139,40 @@ var vueApp7 = new Vue({
     el:"#vueDiv7",
     components:alertPrivateComponent
 });
+
+/*引用页面模板到组件*/
+Vue.component("like", {
+    /*也可以使用#htmlID来引用页面中的元素作为template，
+    * 页面中引用时候是引用该id标签内部的代码，标签不用template命名也可以
+    template:`<button :class='{liked:liked_flag}' @click='on_click_toggle'>
+                      赞{{like_count}}
+              </button>`,*/
+    template:"#like_component_template",
+    data:function () {
+        return {
+            like_count:10,
+            liked_flag:false
+        };
+    },
+    methods:{
+        on_click_toggle:function () {
+            if(this.liked_flag)this.like_count--;
+            else this.like_count++;
+            this.liked_flag = !this.liked_flag;
+        }
+    }
+});
+var vueApp8 = new Vue({
+    el: "#vueDiv8"
+});
+
+/*页面参数向组件内部通信，父->子通信*/
+var vueApp9 = new Vue({
+    el:"#vueDiv9",
+    components:{
+        user_link:{
+            props:["username"],
+            template:`<a :href="'/user/'+username">@{{username}}</a>`
+        }
+    }
+});

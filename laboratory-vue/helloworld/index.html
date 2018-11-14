@@ -7,6 +7,9 @@
         .redColor{
             color: red;
         }
+        .liked{
+            background: pink;
+        }
     </style>
 </head>
 <body>
@@ -121,6 +124,22 @@
      <alert_public></alert_public>
      <alert_private/>
  </div>
+ <div id="vueDiv8">
+     <h5>引用页面模板到组件</h5>
+     <like></like>
+ </div>
+ <template id="like_component_template">
+     <button :class='{liked:liked_flag}' @click='on_click_toggle'>
+         赞{{like_count}}
+     </button>
+ </template>
+
+ <div id="vueDiv9">
+     <h5>页面向组件内部传参，父->子通信</h5>
+     <user_link username="arki"></user_link>
+ </div>
+
+
  <script src="node_modules/vue/dist/vue.js"></script>
  <script src="js/index.js"></script>
 </body>
