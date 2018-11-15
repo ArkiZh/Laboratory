@@ -176,3 +176,92 @@ var vueApp9 = new Vue({
         }
     }
 });
+
+/*子->父通信*/
+//两个自定义组件:balance_block模块中需要加载show_balance_button模块
+// 父组件            子组件
+// balance_block    show_balance_button
+// 局部组件          全局组件                       可行
+// 局部组件          在balance_block中定义          可行
+// 在后者中定义       局部组件                       不可行
+// 局部组件          局部组件                       不可行
+var vueApp10 = new Vue({
+    el:"#vueDiv10",
+    components:{
+        balance_block: {
+            template: `<div>
+                             <show_balance_button @show_balance_listener="button_clicked"></show_balance_button>
+                             <div>您的余额为：
+                                 <span v-if="balanceVisibleFlag">￥1,000,000</span>
+                                 <span v-else>***</span>
+                             </div>
+                             <div>按钮已点击过？{{buttonClicked}}</div>
+                         </div>`,
+            data: function () {
+                return{
+                    buttonClicked: false,
+                    balanceVisibleFlag: false
+                }
+            },
+            methods:{
+                button_clicked:function (data) {
+                    if(!this.buttonClicked) this.buttonClicked = true;
+                    this.balanceVisibleFlag = data.balanceVisibleFlag;
+                }
+            },
+            components:{
+                show_balance_button:{
+                    template:`<button @click="buttonClick">{{buttonName}}</button>`,
+                    data:function () {
+                        return {
+                            balanceVisibleFlag: false,
+                            buttonName: "显示余额"
+                        };
+                    },
+                    methods:{
+                        buttonClick: function () {
+                            if (this.balanceVisibleFlag) {
+                                this.buttonName = "显示余额";
+                            } else {
+                                this.buttonName = "隐藏余额";
+                            }
+                            this.balanceVisibleFlag = !this.balanceVisibleFlag;
+                            this.$emit("show_balance_listener", {"balanceVisibleFlag": this.balanceVisibleFlag});
+                        }
+                    }
+                }
+            }
+        }
+    }
+});
+
+/*同级组件之间的通信：通过公共的Vue对象进行触发事件（$emit）,监听事件（$on）。适用于任意组件间通信*/
+var Event = new Vue();
+var vueApp11 = new Vue({
+    el: "#vueDiv11",
+    components: {
+        keyboard: {
+            template: `<div>键盘输入：<input @keyup="key_up" v-model="inputWords"></div>`,
+            data: function () {
+                return{inputWords: ""}
+            },
+            methods:{
+                key_up: function () {
+                    Event.$emit("keyboard_input_listener", this.inputWords);
+                }
+            }
+        },
+        screen:{
+            template:`<div>显示器显示：{{outputWords}}</div>`,
+            data: function () {
+                return{outputWords: ""}
+            },
+            mounted: function () {
+                var me = this;
+                Event.$on("keyboard_input_listener", function (data) {
+                    me.outputWords = data;
+                });
+            }
+        }
+    }
+});

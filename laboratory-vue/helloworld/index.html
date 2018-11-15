@@ -135,10 +135,20 @@
  </template>
 
  <div id="vueDiv9">
-     <h5>页面向组件内部传参，父->子通信</h5>
+     <h5>页面向组件内部传参，父->子通信：子中用props指定父可以拿哪些自定义属性来传参</h5>
      <user_link username="arki"></user_link>
  </div>
 
+ <div id="vueDiv10">
+     <h5>子->父通信：子用$emit触发父中的事件并传参</h5>
+     <balance_block></balance_block>
+ </div>
+
+ <div id="vueDiv11">
+     <h5>同级组件之间的通信：通过公共的Vue对象进行触发事件（$emit）,监听事件（$on）。适用于任意组件间通信</h5>
+     <keyboard></keyboard>
+     <screen></screen>
+ </div>
 
  <script src="node_modules/vue/dist/vue.js"></script>
  <script src="js/index.js"></script>
