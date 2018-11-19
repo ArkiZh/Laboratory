@@ -3,6 +3,7 @@ package com.arki.laboratory.snippet;
 import com.arki.laboratory.common.ArrayUtil;
 import com.arki.laboratory.common.Logger;
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -119,5 +120,32 @@ public class MyTest {
 			boolean match = Pattern.matches("[a-zA-Z][a-zA-Z0-9_#$]*", sb.toString());
 			System.out.println("=== match " + match + "   time " + (System.currentTimeMillis() - startTime));
 		}
+	}
+
+	@Test
+	public void switchTest() {
+		int i = 11;
+		switch (i) {
+			case 0:
+				System.out.println(0);
+			case 1:
+				System.out.println(1);
+			case 2:
+				System.out.println(2);
+				return;
+			case 3:
+				System.out.println(3);
+				break;
+			default:
+				System.out.println(4);
+		}
+		System.out.println("End!");
+	}
+
+	@Test
+	public void testLog4j(){
+		//Logger.info("Without config.");
+		org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
+		logger.debug("Debug log.");
 	}
 }
