@@ -1,4 +1,4 @@
-package com.arki.laboratory.springboot.web;
+package com.arki.laboratory.springboot.controller;
 
 import com.arki.laboratory.springboot.bo.ApplicationInfo;
 import com.arki.laboratory.springboot.bo.ApplicationProfile;

@@ -13,15 +13,14 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 测试阿里推出的熔断限流组件Sentinel。
+ * 注解方式的使用需要AOP支持，在这里不能测试，转到Laboratory/laboratory-springbootbased/laboratory-springboot中进行测试。
+ */
 public class SentinelTest {
     public static void main(String[] args) {
-
     }
 
-    @SentinelResource(value = "helloworld")
-    public static void helloAnnotation() {
-
-    }
 
     @Test
     public void helloTrueFalse() {
