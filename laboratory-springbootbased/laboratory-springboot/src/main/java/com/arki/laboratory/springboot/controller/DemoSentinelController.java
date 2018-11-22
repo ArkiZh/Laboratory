@@ -1,6 +1,8 @@
 package com.arki.laboratory.springboot.controller;
 
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
+import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRule;
+import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRuleManager;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import com.alibaba.fastjson.JSON;
@@ -18,17 +20,31 @@ public class DemoSentinelController {
 
     static {
         initFlowQpsRule();
+        initDegradeRule();
     }
 
     private static void initFlowQpsRule() {
         List<FlowRule> rules = new ArrayList<FlowRule>();
-        FlowRule rule1 = new FlowRule();
-        rule1.setResource("flowControl");
+        FlowRule rule = new FlowRule();
+        rule.setResource("flowControl");
         // set limit qps to 2
-        rule1.setCount(2);
-        rule1.setGrade(RuleConstant.FLOW_GRADE_QPS);
-        rules.add(rule1);
+        rule.setCount(2);
+        rule.setGrade(RuleConstant.FLOW_GRADE_QPS);
+        rules.add(rule);
         FlowRuleManager.loadRules(rules);
+    }
+
+    private static void initDegradeRule() {
+        List<DegradeRule> rules = new ArrayList<>();
+        DegradeRule rule = new DegradeRule();
+        rule.setResource("degradeControl");
+        // set threshold rt(response time), 10 ms
+        rule.setCount(5);
+        rule.setGrade(RuleConstant.DEGRADE_GRADE_RT);
+        // set time window in seconds
+        rule.setTimeWindow(10);
+        rules.add(rule);
+        DegradeRuleManager.loadRules(rules);
     }
 
     @Autowired
@@ -39,17 +55,23 @@ public class DemoSentinelController {
         return "Here are sentinel tests.";
     }
 
+    @RequestMapping("/printRules")
+    public String printRules() {
+        List<FlowRule> flowRules = FlowRuleManager.getRules();
+        List<DegradeRule> degradeRules = DegradeRuleManager.getRules();
+        return JSON.toJSONString(flowRules) + JSON.toJSONString(degradeRules);
+    }
+
     @RequestMapping("/flowControl")
     public String flowControl() {
         String result = this.sentinelService.flowControl();
         return "FlowControl result: " + result;
     }
 
-
-    @RequestMapping("/printRules")
-    public String printRules() {
-        List<FlowRule> rules = FlowRuleManager.getRules();
-        return JSON.toJSONString(rules);
+    @RequestMapping("/degradeControl")
+    public String degradeControl() {
+        String result = this.sentinelService.degradeControl();
+        return "DegradeControl result: " + result;
     }
 
 }
