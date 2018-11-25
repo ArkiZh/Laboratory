@@ -1,5 +1,8 @@
 package com.arki.laboratory.springboot.service.impl;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.EntryType;
+import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.arki.laboratory.springboot.service.DemoSentinelService;
@@ -17,7 +20,7 @@ public class DemoSentinelServiceImpl implements DemoSentinelService {
     // blockHandler 函数默认需要和原方法在同一个类中。若希望使用其他类的函数，则可以指定 blockHandlerClass 为对应的类的 Class 对象，注意对应的函数必需为 static 函数，否则无法解析。
     public String flowControl() {
         System.out.println("Normal...");
-        return "success!";
+        return "Success!";
     }
 
     @Override
@@ -33,6 +36,37 @@ public class DemoSentinelServiceImpl implements DemoSentinelService {
             e.printStackTrace();
         }
         return "Have slept for " + sleepTime + " ms.";
+    }
+
+
+    @Override
+    @SentinelResource(value = "paramFlowControl",blockHandler = "paramFlowBlockHandler")
+    public String paramFlowControlAnnotation(int param) {
+        return "Success! Param: " + param;
+    }
+
+    @Override
+    public String paramFlowControl(int param) {
+        String result;
+        Entry entry = null;
+        try {
+            entry = SphU.entry("paramFlowControl", EntryType.IN, 1, param);
+            result = "Success! Param: " + param;
+        } catch (BlockException e) {
+            System.out.println(e.getClass().getName());
+            result = "Blocked! Param: " + param;
+        }finally {
+            if (entry != null) {
+                entry.exit();
+            }
+        }
+        return result;
+    }
+
+
+    public String paramFlowBlockHandler(int param, BlockException e) {
+        System.out.println(e.getClass());
+        return "Blocked! Param: " + param;
     }
 
     public String blockHandler(BlockException e) {
