@@ -5,6 +5,7 @@ import com.arki.laboratory.common.Logger;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -147,5 +148,16 @@ public class MyTest {
 		//Logger.info("Without config.");
 		org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
 		logger.debug("Debug log.");
+	}
+
+	@Test
+	public void testUrlCode(){
+		String encode = URLEncoder.encode("http://localhost:8089/para-server/sw/base/para/depParaList?paraName=MOC_NALI_COUNTRY_CODE&filterCon=cny_cde<>EU,cny_cde!#0%&rowNum=5000");
+		System.out.println(encode);
+		System.out.println(URLEncoder.encode("#")); //%23
+		System.out.println(URLEncoder.encode("%")); //%25
+		System.out.println(URLEncoder.encode("!")); //%21
+		System.out.println(URLEncoder.encode("@")); //%40
+		System.out.println("".split(",").length);
 	}
 }
