@@ -16,5 +16,7 @@
 		<module>laboratory-authority-jwt</module>
         <module>laboratory-serviceprovider-jwt</module>
 		<module>laboratory-springboot-quickstart</module>
-	</modules>
+		<module>laboratory-springcloud-config-server</module>
+        <module>laboratory-springcloud-config-client</module>
+    </modules>
 </project>
