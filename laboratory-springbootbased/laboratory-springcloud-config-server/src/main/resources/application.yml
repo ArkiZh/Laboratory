@@ -5,4 +5,10 @@ spring:
     config:
       server:
         git:
-          uri: file:///C:/workspace/WorkBench/SpringCloudConfig
+          #uri: file:///C:/workspace/WorkBench/SpringCloudConfig
+          #uri: git@github.com:ArkiZh/SpringCloudConfigRepo.git
+          uri: https://github.com/ArkiZh/SpringCloudConfigRepo #https链接后面的.git可不写
+          skipSslValidation: true
+          timeout: 4 # the time, in seconds, that the configuration server will wait to acquire an HTTP connection.
+          basedir: C:/workspace/WorkBench/SpringCloudConfigLocal #files are checked out or cloned to the this directory
+
