@@ -8,7 +8,26 @@ spring:
           #uri: file:///C:/workspace/WorkBench/SpringCloudConfig
           #uri: git@github.com:ArkiZh/SpringCloudConfigRepo.git
           uri: https://github.com/ArkiZh/SpringCloudConfigRepo #https链接后面的.git可不写
-          skipSslValidation: true
+          #uri: https://github.com/{application} #supports a git repository URL with placeholders for the {application} and {profile} (and {label}
+          skipSslValidation: true #The configuration server’s validation of the Git server’s SSL certificate.(default is false)
           timeout: 4 # the time, in seconds, that the configuration server will wait to acquire an HTTP connection.
           basedir: C:/workspace/WorkBench/SpringCloudConfigLocal #files are checked out or cloned to the this directory
-
+          cloneOnStart: true #clone the remote repositories at startup. By default, triggered when configuration is first requested
+          repos:
+            simple: file:///C:/workspace/WorkBench/SpringCloudConfigDir/simple
+            special:
+              pattern: special*/dev*,*special*/dev*
+              uri: file:///C:/workspace/WorkBench/SpringCloudConfigDir/special
+            local:
+              pattern: local*
+              uri: file:///C:/workspace/WorkBench/SpringCloudConfigDir/local
+            development:
+              pattern:
+                - '*/development'
+                - '*/staging'
+              uri: file:///C:/workspace/WorkBench/SpringCloudConfigDir/development
+            prouction:
+              pattern:
+                - '*/qa'
+                - '*/production'
+              uri: file:///C:/workspace/WorkBench/SpringCloudConfigDir/production
