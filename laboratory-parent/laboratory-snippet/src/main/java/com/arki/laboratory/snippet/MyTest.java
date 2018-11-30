@@ -5,6 +5,7 @@ import com.arki.laboratory.common.Logger;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
+import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -163,4 +164,76 @@ public class MyTest {
 		String decode = URLDecoder.decode("[route%3A%2F%2F0.0.0.0%2Fcom.xxxService%3Fcategory%3Drouters%26dynamic%3Dfalse%26enabled%3Dtrue%26force%3Dtrue%26group%3DLS%26name%3DLS%2Fcom.xxxService+blackwhitelist%26priority%3D0%26router%3Dcondition%26rule%3Dconsumer.host%2B%2521%253D%2B192.168.0.0%2B%253D%253E%2Bfalse%26runtime%3Dfalse%26type%3Djavascript]");
 		System.out.println(URLDecoder.decode(decode));
 	}
+
+	@Test
+	public void testCloseStream() throws IOException {
+		File file = new File("com.arki.laboratory.log");
+		FileInputStream fileInputStream = null;
+		FileOutputStream fileOutputStream = null;
+		try {
+			fileInputStream = new FileInputStream(file);
+			fileOutputStream = new FileOutputStream(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				fileInputStream.close();
+				throw new IOException();
+				//此处不用catch块的话会把异常抛到调用者，后面的finally块会继续执行。
+			}finally {
+				try {
+					fileOutputStream.close();
+					System.out.println("Output stream closed.");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	@Test
+	public void testCloseStreamTwice() throws IOException {
+		//测试可不可以关两遍
+		File file = new File("com.arki.laboratory.log");
+		FileInputStream fileInputStream = new FileInputStream(file);
+		fileInputStream.close();
+		System.out.println("1");
+		fileInputStream.close();
+		System.out.println("2");
+	}
+
+	@Test
+	public void testTryCatch() {
+		try {
+			triggerRuntimeException();
+			System.out.println("Normal.");
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * Using return, break, throw, and so on from a finally block
+	 * suppresses the propagation of
+	 * any unhandled Throwable which was thrown in the try or catch block.
+	 *
+	 * This rule raises an issue when a jump statement (break, continue, return, throw, and goto)
+	 * would force control flow to leave a finally block.
+	 */
+	private void triggerRuntimeException() {
+		try{
+			throw new RuntimeException("A");
+		}finally {
+			//在finally里执行return会抑制本方法抛出的异常，导致调用者不会获取异常
+			//问题详细说明：CWE-584: Return Inside Finally Block：
+			// http://cwe.mitre.org/data/definitions/584.html
+			return;
+		}
+	}
+
+	@Test
+	public void testNullInstanceOf() {
+		System.out.println(null instanceof String);
+	}
+
 }
