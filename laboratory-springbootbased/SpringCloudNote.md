@@ -56,27 +56,66 @@ Eureka Client还需要配置一个Eureka Server的URL列表。
      + `{label}`, which is a server side feature labelling a "versioned" set of config files.
 
      用法：
-     1. 在Client端bootstrap.yml中定义应用名和profile
-     
-            spring:
-              application:
-                name: foo
-              profiles:
-                active: dev,mysql
-     2. 在Server端设置资源路径：
-             
-             spring:
-               cloud:
-                 config:
-                   server:
-                     git:
-                       uri: https://github.com/myorg/{application}
-     3. Client在向Server发拉取配置的请求时候，  
-     会将`spring.application.name`(此处为`foo`)和`spring.profiles.active`（此处按文档应为`mysql`,可是实际测试时是`dev,mysql`）发送过去。  
-     Server端在处理时会将`{application}`替换为`foo`，选取`https://github.com/myorg/foo`仓库.  
-     *但是Server端会报错：`No custom http config found for URL: https://github.com/myorg/foo/...`。是因为需要针对变量{application}单独设置config吗？*  
-     Note:Active profiles take precedence over defaults, and, if there are multiple profiles, the last one wins (similar to adding entries to a Map).  
-     
+     1. 使用git uri匹配
+         1. 在Client端bootstrap.yml中定义应用名和profile
+         
+                spring:
+                  application:
+                    name: foo
+                  profiles:
+                    active: dev,mysql
+         2. 在Server端设置资源路径：
+                 
+                 spring:
+                   cloud:
+                     config:
+                       server:
+                         git:
+                           uri: https://github.com/myorg/{application}
+         3. Client在向Server发拉取配置的请求时候，  
+         会将`spring.application.name`(此处为`foo`)和`spring.profiles.active`（此处按文档应为`mysql`,可是实际测试时是`dev,mysql`）发送过去。  
+         Server端在处理时会将`{application}`替换为`foo`，选取`https://github.com/myorg/foo`仓库.  
+         *但是Server端会报错：`No custom http config found for URL: https://github.com/myorg/foo/...`。是因为需要针对变量{application}单独设置config吗？*  
+         Note:Active profiles take precedence over defaults, and, if there are multiple profiles, the last one wins (similar to adding entries to a Map).  
+     2. Pattern Matching and Multiple Repositories
+         1. 在`repos`中定义多个git仓库，使用client端传来的`{application}/{profile}`与配置中的`pattern`匹配，判断使用哪个仓库
+         
+                 spring:
+                   cloud:
+                     config:
+                       server:
+                         git:
+                           uri: https://github.com/ArkiZh/SpringCloudConfigRepo
+                           repos:
+                             simple: file:///C:/workspace/WorkBench/SpringCloudConfigDir/simple # pattern: simple/*
+                             special:
+                               pattern: special*/dev*,*special*/dev*
+                               uri: file:///C:/workspace/WorkBench/SpringCloudConfigDir/special
+                             local:
+                               pattern: local* # pattern: local*/*
+                               uri: file:///C:/workspace/WorkBench/SpringCloudConfigDir/local
+                             development:
+                               pattern:
+                                 - '*/development'
+                                 - '*/staging'
+                               uri: file:///C:/workspace/WorkBench/SpringCloudConfigDir/development
+                             production:
+                               pattern:
+                                 - '*/qa'
+                                 - '*/production'
+                               uri: file:///C:/workspace/WorkBench/SpringCloudConfigDir/production
+            仓库与访问对应关系：
+              
+            |仓库|访问路径|
+            |---|---|
+            |simple|localhost:8888/simple/XXX|
+            |special|localhost:8888/specialXXX/devXXX|
+            |local|localhost:8888/localXXX/XXX|
+            |development|localhost:8888/XXX/development|
+            |production|localhost:8888/XXX/production|
+            |default|上面都没匹配上选用默认仓库`spring.cloud.config.server.git.uri`|
+         2. 
+                     
    + SpringBoot与SpringCloud版本的关系：  
    两者没有直接的关系，SpringCloud的版本号为英文单词，集成了很多相互独立的组件，
    从这些个组件中选出可以共同起作用的版本，组成的一个大的集合。SpringBoot即可以
