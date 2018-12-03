@@ -15,6 +15,13 @@ spring:
           cloneOnStart: true #clone the remote repositories at startup. By default, triggered when configuration is first requested
           searchPaths: searchDirA,searchDirB*,searchDirC/searchDirA,appConfig/{application}/{profile} #search for config files in the top level directory and in the specified sub-directory
           #这个searchPaths配置会扫描uri的根目录、其下searDirA文件夹、searchDirB*文件夹、searchDirC/searchDirA文件夹、appConfig/{应用名}/{profile}文件夹
+          #{application}放在最前面时候需要在两端加单引号：searchPaths: '{application}'
+          username: xxx
+          password: xxx
+          force-pull: true # force pull from the remote repository if the local copy is dirty
+          deleteUntrackedBranches: true # force delete untracked branches from local repository
+          refreshRate: 10 # in seconds, how often the config server will fetch updated configuration data from your Git backend.
+          # By default the value is 0, meaning the config server will fetch updated configuration from the Git repo every time it is requested.
           repos:
             simple: file:///C:/workspace/WorkBench/SpringCloudConfigDir/simple # pattern: simple/*
             special:
