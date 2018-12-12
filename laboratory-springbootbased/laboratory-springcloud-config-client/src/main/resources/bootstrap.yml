@@ -1,8 +1,32 @@
+# # 直连configServer的配置：
+# spring:
+#   cloud:
+#     config:
+#       uri: http://localhost:8888
+#   application:
+#     name: CloudConfigClient
+#   profiles:
+#     active: dev
+
+# 通过Eureka连接ConfigServer的配置：
 spring:
+  application:
+    name: configClient
   cloud:
     config:
-      uri: http://localhost:8888
-  application:
-    name: CloudConfigClient
+      discovery:
+        enabled: true
+        serviceId: configServer
   profiles:
     active: dev
+  rabbitmq:
+    host: 192.168.222.141
+    port: 5672
+    username: admin
+    password: admin
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8100/eureka/
+server:
+  port: 8081
