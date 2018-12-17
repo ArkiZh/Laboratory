@@ -4,6 +4,7 @@ import com.arki.laboratory.common.Logger;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ThreadLocalTest {
 
@@ -31,6 +32,34 @@ public class ThreadLocalTest {
         Logger.info(threadLocal.get().toString());
         threadLocal.set(girl);
         Logger.info(threadLocal.get().toString());
+    }
+
+    @Test
+    public void multipleThreadTest() {
+        ThreadLocal<Map<String, String>> mapThreadLocal = new ThreadLocal<Map<String,String>>(){
+            @Override
+            protected Map<String,String> initialValue() {
+                return new HashMap<>();
+            }
+        };
+
+        Thread threadA = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mapThreadLocal.get().put("ThreadA", "ThreadA");
+            }
+        });
+
+        Thread threadB = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mapThreadLocal.get().put("ThreadB", "ThreadB");
+            }
+        });
+
+        threadA.start();
+        threadB.start();
+        mapThreadLocal.get().put("rootThread", "rootThread");
     }
 
 
