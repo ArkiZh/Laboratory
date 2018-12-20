@@ -265,3 +265,38 @@ var vueApp11 = new Vue({
         }
     }
 });
+
+/*过滤器*/
+Vue.filter("currency", function (val,unit) {
+    val = val || 0;
+    unit = unit || "元";
+    return val + unit;
+});
+Vue.filter("lengthTransfer",function (val) {
+    val = val || 0;
+    return (val / 1000).toFixed(2) + "m";
+})
+var vueApp12 = new Vue({
+    el: "#vueDiv12",
+    data: {
+        price: 99,
+        length: 10
+    }
+});
+
+/*自定义指令*/
+Vue.directive("pin", function (el, binding) {
+    if (binding.value) {
+        el.style.position = "fixed";
+        el.style.left = "10px";
+        el.style.bottom = "10px";
+    } else {
+        el.style.position = "static";
+    }
+});
+var vueApp13 = new Vue({
+    el: "#vueDiv13",
+    data:{
+        pinned: true
+    }
+});

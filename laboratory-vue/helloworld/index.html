@@ -153,6 +153,17 @@
      <screen></screen>
  </div>
 
+ <div id="vueDiv12">
+     <h5>过滤器|</h5>
+     <input v-model="price">{{price | currency("dollar")}}<br>
+     <input v-model="length">mm等于{{length | lengthTransfer("m")}}
+ </div>
+
+ <div id="vueDiv13">
+     <h5>自定义指令Vue.directive</h5>
+     <div v-pin="pinned"><button @click="pinned=!pinned">点击钉住我/点击取消钉住</button></div>
+ </div>
+
  <script src="node_modules/vue/dist/vue.js"></script>
  <script src="js/index.js"></script>
 </body>
