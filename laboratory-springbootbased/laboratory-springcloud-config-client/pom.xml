@@ -25,7 +25,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <!--<spring-cloud.version>Greenwich.M3</spring-cloud.version>-->
-        <spring-cloud.version>Finchley.SR2</spring-cloud.version>
+       <!-- <spring-cloud.version>Finchley.SR2</spring-cloud.version>--><!--使用SR2无法集成bus-amqp,有包间的不兼容-->
+        <spring-cloud.version>Finchley.SR1</spring-cloud.version>
     </properties>
 
 
