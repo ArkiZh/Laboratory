@@ -16,50 +16,49 @@
     <artifactId>laboratory-spring</artifactId>
     <packaging>pom</packaging>
 
+    <properties>
+        <spring-webmvc.version>4.3.14.RELEASE</spring-webmvc.version>
+        <spring-tx.version>4.3.14.RELEASE</spring-tx.version>
+    </properties>
 
+    <dependencyManagement>
 
-    <dependencies>
-        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-            <scope>provided</scope>
-        </dependency>
+        <dependencies>
+            <!-- Spring dependency begin -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring-webmvc.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
+                <version>${spring-tx.version}</version>
+            </dependency>
 
-        <!-- Spring dependency begin -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>4.3.14.RELEASE</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-            <version>4.3.14.RELEASE</version>
-        </dependency>
+            <!-- Spring dependency end -->
 
-        <!-- Spring dependency end -->
+            <!-- Log configuration for spring begin -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>1.7.21</version>
+            </dependency>
+            <dependency>
+                <groupId>com.arki</groupId>
+                <artifactId>laboratory-common</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+            <!-- Log configuration for spring end -->
 
-        <!-- Log configuration for spring begin -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.21</version>
-        </dependency>
-        <dependency>
-            <groupId>com.arki</groupId>
-            <artifactId>laboratory-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <!-- Log configuration for spring end -->
+        </dependencies>
 
-    </dependencies>
+    </dependencyManagement>
 
 </project>
