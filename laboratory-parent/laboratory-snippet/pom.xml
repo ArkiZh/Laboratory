@@ -142,6 +142,13 @@
             <version>3.5.0-alpha</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.jpmml/pmml-evaluator -->
+        <dependency>
+            <groupId>org.jpmml</groupId>
+            <artifactId>pmml-evaluator</artifactId>
+            <version>1.3.7</version>
+        </dependency>
+
 
     </dependencies>
 

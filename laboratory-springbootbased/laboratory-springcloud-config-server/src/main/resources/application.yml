@@ -42,6 +42,11 @@ spring:
               uri: file:///C:/workspace/WorkBench/SpringCloudConfigDir/production
   application:
     name: configServer
+  rabbitmq:
+    host: 192.168.222.141
+    port: 5672
+    username: admin
+    password: admin
 eureka:
   client:
     serviceUrl:
