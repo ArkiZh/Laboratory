@@ -13,10 +13,8 @@ public class FolderCompare {
     private static String targetPath;
 
     static{
-        /*sourcePath = "C:/FolderCompare/sourceFolder";
-        targetPath = "C:/FolderCompare/targetFolder";*/
-        sourcePath = "C:\\Users\\k\\Desktop\\ciqproxy\\有毒化学品项目";
-        targetPath = "C:\\Users\\k\\Desktop\\有毒化学品项目";
+        sourcePath = "C:/FolderCompare/sourceFolder";
+        targetPath = "C:/FolderCompare/targetFolder";
     }
 
     public static void main(String[] args) throws IOException {
@@ -65,7 +63,7 @@ public class FolderCompare {
                     for (int i = 0; i < waitToCompare.size(); i += 2) {
                         compareFile(waitToCompare.get(i), waitToCompare.get(i + 1));
                     }
-                } else {
+                } else if (!(aChildren.length == 0 && bChildren.length == 0)) {
                     System.out.println("Find difference! " + a.getCanonicalPath() + (aChildren.length > 0 ? " do" : " don't") + " have files inside, while "
                             + b.getCanonicalPath() + (bChildren.length > 0 ? " do" : " don't") + " have");
                 }
