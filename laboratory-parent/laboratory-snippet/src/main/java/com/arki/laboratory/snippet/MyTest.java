@@ -236,4 +236,18 @@ public class MyTest {
 		System.out.println(null instanceof String);
 	}
 
+
+	@Test
+	public void testPower() {
+		int temp = 1;
+		int i = 1;
+		while (true){
+			temp = 2 * temp;
+			int power = 100 * i * i;
+			System.out.println(i + " " + power + " " + temp);
+			if (power < temp) break;
+			i++;
+		}
+		System.out.println(i);
+	}
 }

@@ -1,4 +1,4 @@
-package com.arki.laboratory.snippet.compare;
+package com.arki.laboratory.snippet.compare.app;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -13,12 +13,24 @@ public class FileInfo {
 
     public static void main(String[] args) {
         File file = new File("C:/360Downloads");
-        FileInfo fileInfo = new FileInfo(file, null,true, true, true);
+        FileInfo fileInfo = new FileInfo(file, null,true, true, false);
         System.out.println(fileInfo);
     }
 
     public FileInfo(File file) {
-        this(file,null,true, false, false);
+        this(file,null,false, false, false);
+    }
+
+    public FileInfo(File file,boolean sizeFlag) {
+        this(file,null,sizeFlag, false, false);
+    }
+
+    public FileInfo(File file,boolean sizeFlag,boolean md5Flag) {
+        this(file, null, sizeFlag, md5Flag, false);
+    }
+
+    public FileInfo(File file,boolean sizeFlag,boolean md5Flag,boolean childrenInfoFlag) {
+        this(file, null, sizeFlag, md5Flag, childrenInfoFlag);
     }
 
     public FileInfo(File file,FileInfo parent,boolean sizeFlag,boolean md5Flag, boolean childrenInfoFlag){
