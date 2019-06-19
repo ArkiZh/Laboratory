@@ -54,20 +54,7 @@ public class FileInfo {
                 this.size = file.length();
             }
             if (md5Flag) {
-                try {
-                    long a = System.currentTimeMillis();
-                    FileInputStream fis =  new FileInputStream(file);
-                    this.md5 = DigestUtils.md2Hex(fis);
-                    long b = System.currentTimeMillis() - a;
-                    if (b > 1000) {
-                        System.out.println("MD5 cost ms: " + b + " Size(MB):"+this.size/(1024*1024.0)+" Path: " + this.canonicalPath);
-                    }
-                    fis.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                this.md5 = Utils.calculateMD5(file);
             }
         }
         if ("dir".equals(this.type) && childrenInfoFlag) {
@@ -154,5 +141,10 @@ public class FileInfo {
         return parent;
     }
 
-
+    /**
+     * It takes much time to calculate md5, use it only necessary.
+     */
+    public void calculateMd5() {
+        this.md5 = Utils.calculateMD5(new File(this.getCanonicalPath()));
+    }
 }

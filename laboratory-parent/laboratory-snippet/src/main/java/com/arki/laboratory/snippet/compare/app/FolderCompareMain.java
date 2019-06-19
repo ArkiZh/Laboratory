@@ -1,10 +1,14 @@
 package com.arki.laboratory.snippet.compare.app;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.*;
+import java.util.List;
 
 public class FolderCompareMain {
 
@@ -62,8 +66,25 @@ public class FolderCompareMain {
         frame.getFileMd5Checkbox().setEnabled(false);
         frame.getScanButton().setEnabled(false);
         frame.getWarnInfoLabel().setText("");
-        frame.getOriginResultList().setListData(new String[]{});
-        frame.getBackupResultList().setListData(new String[]{});
+        /*frame.getOriginResultList().setCellRenderer(new DefaultListCellRenderer(){
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                this.setBackground(Color.orange);
+                return this;
+            }
+        });
+        frame.getOriginResultList().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int index = frame.getOriginResultList().locationToIndex(e.getPoint());
+                frame.getOriginResultList().setSelectedIndex(index);
+                frame.getOriginResultList().setForeground(Color.BLUE);
+            }
+        });*/
+        frame.getOriginResultList().setListData(new Difference[]{});
+        frame.getBackupResultList().setListData(new Difference[]{});
     }
     public void resetScanOptions() {
         frame.getOriginDirText().setEnabled(true);
@@ -114,7 +135,8 @@ public class FolderCompareMain {
     }
 
     /**
-     * 第一次调用时候origin backup的文件名可不一样，之后递归调用时两者名字需确保一样
+     * 第一次调用时候origin backup的文件名可不一样，之后递归调用时两者名字需确保一样。
+     * 原因：第一次调用时可能只是为了比较两个不同名的文件md5是否一致，或者比较两个不同名字的文件夹中内容是否一样。
      * @param origin
      * @param backup
      * @param useSize
@@ -136,16 +158,17 @@ public class FolderCompareMain {
                 if (useSize) {
                     if (origin.getSize() != backup.getSize()) {
                         // Find different size.
-                        recordDifferenceToPane(origin, RECORD_DIFFERENCE_ORIGIN_SIZE);
-                        recordDifferenceToPane(backup, RECORD_DIFFERENCE_BACKUP_SIZE);
+                        recordDifferenceToPane(new Difference(origin, Difference.CAMP_ORIGIN, Difference.DIFF_SIZE));
+                        recordDifferenceToPane(new Difference(backup, Difference.CAMP_BACKUP, Difference.DIFF_SIZE));
                         return;
                     }
                 }
                 if (useMD5) {
                     if (!origin.getMd5().equals(backup.getMd5())) {
                         // Find different size.
-                        recordDifferenceToPane(origin, RECORD_DIFFERENCE_ORIGIN_MD5);
-                        recordDifferenceToPane(backup, RECORD_DIFFERENCE_BACKUP_MD5);
+                        recordDifferenceToPane(new Difference(origin, Difference.CAMP_ORIGIN, Difference.DIFF_MD5));
+                        recordDifferenceToPane(new Difference(backup, Difference.CAMP_BACKUP, Difference.DIFF_MD5));
+                        return;
                     }
                 }
             } else if ("dir".equals(origin.getType())) {
@@ -169,10 +192,15 @@ public class FolderCompareMain {
                     // Iterate children of origin.
                     for (int i = 0; i < originChildren.size(); i++) {
                         String originChildName = originChildren.get(i);
-                        FileInfo originChild = new FileInfo(new File(origin.getCanonicalPath(), originChildName), origin, useSize, useMD5, false);
+                        // Since this origin child may don't have the corresponding backup child, don't calculate md5 now. It takes much time to calculate.
+                        FileInfo originChild = new FileInfo(new File(origin.getCanonicalPath(), originChildName), origin, useSize, false, false);
                         // Judge whether children of backup contains this origin child.
                         int hitIndex = backupChildren.indexOf(originChildName);
                         if (hitIndex >= 0) {
+                            // Calculate md5 and set it into md5 field.
+                            if (useMD5) {
+                                originChild.calculateMd5();
+                            }
                             // Compare the same named files.
                             FileInfo backupChild = new FileInfo(new File(backup.getCanonicalPath(), originChildName), backup, useSize, useMD5, false);
                             compareFileInfo(originChild, backupChild, useSize, useMD5);
@@ -180,13 +208,13 @@ public class FolderCompareMain {
                             backupChildren.remove(hitIndex);
                         } else {
                             // Only the origin has this file. Record it.
-                            recordDifferenceToPane(originChild, RECORD_DIFFERENCE_ORIGIN_REDUNDANT);
+                            recordDifferenceToPane(new Difference(originChild, Difference.CAMP_ORIGIN, Difference.DIFF_REDUNDANT));
                         }
                     }
                     // After the compare according to name and remove, only the backup has these files.
                     for (int i = 0; i < backupChildren.size(); i++) {
-                        FileInfo backupChild = new FileInfo(new File(backup.getCanonicalPath(), backupChildren.get(i)), backup, useSize, useMD5, false);
-                        recordDifferenceToPane(backupChild, RECORD_DIFFERENCE_BACKUP_REDUNDANT);
+                        FileInfo backupChild = new FileInfo(new File(backup.getCanonicalPath(), backupChildren.get(i)), backup, useSize, false, false);
+                        recordDifferenceToPane(new Difference(backupChild, Difference.CAMP_BACKUP, Difference.DIFF_REDUNDANT));
                     }
                 }
             } else {
@@ -196,29 +224,22 @@ public class FolderCompareMain {
     }
 
 
-    public void recordDifferenceToPane(FileInfo fileInfo, int code) {
-        JList<String> jList;
-        if (code == RECORD_DIFFERENCE_ORIGIN_REDUNDANT) {
+    public void recordDifferenceToPane(Difference difference) {
+        FolderCompareGUI.DifferenceJList jList;
+        int camp = difference.getCamp();
+        if (camp == Difference.CAMP_ORIGIN) {
             jList = frame.getOriginResultList();
-        } else if (code == RECORD_DIFFERENCE_BACKUP_REDUNDANT) {
-            jList = frame.getBackupResultList();
-        }else if(code==RECORD_DIFFERENCE_ORIGIN_SIZE){
-            jList = frame.getOriginResultList();
-        } else if (code == RECORD_DIFFERENCE_BACKUP_SIZE) {
-            jList = frame.getBackupResultList();
-        } else if (code == RECORD_DIFFERENCE_ORIGIN_MD5) {
-            jList = frame.getOriginResultList();
-        } else if (code == RECORD_DIFFERENCE_BACKUP_MD5) {
+        } else if (camp == Difference.CAMP_BACKUP) {
             jList = frame.getBackupResultList();
         } else {
-            throw new RuntimeException("Unexpected code");
+            throw new RuntimeException("Unexpected camp!");
         }
-        ListModel<String> model = jList.getModel();
-        String[] content = new String[model.getSize() + 1];
+        ListModel<Difference> model = jList.getModel();
+        Difference[] content = new Difference[model.getSize() + 1];
         for (int i = 0; i < model.getSize(); i++) {
             content[i] = model.getElementAt(i);
         }
-        content[model.getSize()] = fileInfo.getCanonicalPath();
+        content[model.getSize()] = difference;
         jList.setListData(content);
     }
 

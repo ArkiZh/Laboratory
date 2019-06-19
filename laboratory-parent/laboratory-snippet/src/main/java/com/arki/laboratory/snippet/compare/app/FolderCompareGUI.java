@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class FolderCompareGUI extends JFrame{
 
@@ -33,9 +35,9 @@ public class FolderCompareGUI extends JFrame{
     private final JLabel originResultInfoLabel = new JLabel("Backup lacking:");
     // Backup directory contains these files, while origin directory doesn't contain:
     private final JLabel backupResultInfoLabel = new JLabel("Backup redundant:");
-    private final JList<String> originResultList = new JList<>();
+    private final DifferenceJList originResultList = new DifferenceJList();
     private final JScrollPane originResultScrollPane = new JScrollPane();
-    private final JList<String> backupResultList = new JList<>();
+    private final DifferenceJList backupResultList = new DifferenceJList();
     private final JScrollPane backupResultScrollPane = new JScrollPane();
 
     public FolderCompareGUI() {
@@ -305,7 +307,7 @@ public class FolderCompareGUI extends JFrame{
         return backupResultInfoLabel;
     }
 
-    public JList<String> getOriginResultList() {
+    public DifferenceJList getOriginResultList() {
         return originResultList;
     }
 
@@ -313,11 +315,118 @@ public class FolderCompareGUI extends JFrame{
         return originResultScrollPane;
     }
 
-    public JList<String> getBackupResultList() {
+    public DifferenceJList getBackupResultList() {
         return backupResultList;
     }
 
     public JScrollPane getBackupResultScrollPane() {
         return backupResultScrollPane;
     }
+
+    static class DifferenceJList extends JList<Difference> {
+        public DifferenceJList() {
+           super();
+           initCellRender();
+        }
+
+        private void initListener() {
+            DifferenceJList that = this;
+            this.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    super.mouseEntered(e);
+                    int i = that.locationToIndex(e.getPoint());
+                    that.setCellRenderer(new DefaultListCellRenderer(){
+                        @Override
+                        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                            if (index == i) {
+                                setBackground(Color.LIGHT_GRAY);
+                                System.out.println("Enter "+i);
+                            }
+                            return this;
+                        }
+                    });
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    super.mouseExited(e);
+                    int i = that.locationToIndex(e.getPoint());
+                    that.setCellRenderer(new DefaultListCellRenderer(){
+                        @Override
+                        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                            if (index == i) {
+                                setBackground(Color.WHITE);
+                                System.out.println("Leave  "+i);
+                            }
+                            return this;
+                        }
+                    });
+                }
+            });
+        }
+
+        private void initCellRender() {
+            //this.setCellRenderer(new MyCellRenderer());
+
+            this.setCellRenderer(new ListCellRenderer<Difference>() {
+                @Override
+                public Component getListCellRendererComponent(JList<? extends Difference> list, Difference difference, int index, boolean isSelected, boolean cellHasFocus) {
+
+                    JLabel jLabel = new JLabel(difference.getFileInfo().getCanonicalPath());
+                    // Set item color according to selected, diff-type. Focus has no effect here.
+                    if (isSelected){
+                        jLabel.setBackground(Color.LIGHT_GRAY);
+                    } else {
+                        if (difference.getCode() == Difference.DIFF_SIZE) {
+                            jLabel.setBackground(Color.PINK);
+                        } else if (difference.getCode() == Difference.DIFF_MD5) {
+                            jLabel.setBackground(Color.RED);
+                        } else if ("dir".equals(difference.getFileInfo().getType())) {
+                            jLabel.setBackground(Color.orange);
+                        } else {
+                            jLabel.setBackground(Color.WHITE);
+                        }
+                    }
+
+                    // Opaque must be true, the default is false. Otherwise, you can't see any effects on it.
+                    jLabel.setOpaque(true);
+                    return jLabel;
+                }
+            });
+        }
+    }
+
+    static class MyCellRenderer extends JLabel implements ListCellRenderer {
+
+        // This is the only method defined by ListCellRenderer.
+        // We just reconfigure the JLabel each time we're called.
+
+        public Component getListCellRendererComponent(
+                JList list,              // the list
+                Object value,            // value to display
+                int index,               // cell index
+                boolean isSelected,      // is the cell selected
+                boolean cellHasFocus)    // does the cell have focus
+        {
+            String s = value.toString();
+            setText(s);
+
+            if (isSelected) {
+                setBackground(list.getSelectionBackground());
+                setForeground(list.getSelectionForeground());
+            } else {
+                setBackground(list.getBackground());
+                setForeground(list.getForeground());
+            }
+            //setEnabled(list.isEnabled());
+            setFont(list.getFont());
+            setOpaque(true);
+            return this;
+        }
+    }
+
+
 }
