@@ -1,6 +1,7 @@
 package com.arki.laboratory.snippet.compare.app;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -327,45 +328,32 @@ public class FolderCompareGUI extends JFrame{
         public DifferenceJList() {
            super();
            initCellRender();
+           initListener();
         }
 
         private void initListener() {
-            DifferenceJList that = this;
+            JPopupMenu popupMenu = new JPopupMenu();
+            JMenuItem copyPathButton = new JMenuItem("Copy canonical path");
+            JMenuItem synchorizeFilesButton = new JMenuItem("Synchronize selected files to the other side.");
+            popupMenu.add(copyPathButton);
+            popupMenu.add(synchorizeFilesButton);
+            this.setComponentPopupMenu(popupMenu);
+            /* This also work:
             this.addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseEntered(MouseEvent e) {
-                    super.mouseEntered(e);
-                    int i = that.locationToIndex(e.getPoint());
-                    that.setCellRenderer(new DefaultListCellRenderer(){
-                        @Override
-                        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                            if (index == i) {
-                                setBackground(Color.LIGHT_GRAY);
-                                System.out.println("Enter "+i);
-                            }
-                            return this;
-                        }
-                    });
+                public void mousePressed(MouseEvent e) {
+                    if (e.isPopupTrigger()) {
+                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                    }
                 }
 
                 @Override
-                public void mouseExited(MouseEvent e) {
-                    super.mouseExited(e);
-                    int i = that.locationToIndex(e.getPoint());
-                    that.setCellRenderer(new DefaultListCellRenderer(){
-                        @Override
-                        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                            if (index == i) {
-                                setBackground(Color.WHITE);
-                                System.out.println("Leave  "+i);
-                            }
-                            return this;
-                        }
-                    });
+                public void mouseReleased(MouseEvent e) {
+                    if (e.isPopupTrigger()) {
+                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                    }
                 }
-            });
+            });*/
         }
 
         private void initCellRender() {
@@ -398,35 +386,4 @@ public class FolderCompareGUI extends JFrame{
             });
         }
     }
-
-    static class MyCellRenderer extends JLabel implements ListCellRenderer {
-
-        // This is the only method defined by ListCellRenderer.
-        // We just reconfigure the JLabel each time we're called.
-
-        public Component getListCellRendererComponent(
-                JList list,              // the list
-                Object value,            // value to display
-                int index,               // cell index
-                boolean isSelected,      // is the cell selected
-                boolean cellHasFocus)    // does the cell have focus
-        {
-            String s = value.toString();
-            setText(s);
-
-            if (isSelected) {
-                setBackground(list.getSelectionBackground());
-                setForeground(list.getSelectionForeground());
-            } else {
-                setBackground(list.getBackground());
-                setForeground(list.getForeground());
-            }
-            //setEnabled(list.isEnabled());
-            setFont(list.getFont());
-            setOpaque(true);
-            return this;
-        }
-    }
-
-
 }
