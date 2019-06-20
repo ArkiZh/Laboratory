@@ -19,7 +19,7 @@ public class FolderCompareMain {
     private static final int RECORD_DIFFERENCE_ORIGIN_MD5 = 5;
     private static final int RECORD_DIFFERENCE_BACKUP_MD5 = 6;
 
-    private FolderCompareGUI frame = new FolderCompareGUI();
+    private FolderCompareGUIAbsolute frame = new FolderCompareGUIAbsolute();
 
 
 
@@ -225,7 +225,7 @@ public class FolderCompareMain {
 
 
     public void recordDifferenceToPane(Difference difference) {
-        FolderCompareGUI.DifferenceJList jList;
+        FolderCompareGUIAbsolute.DifferenceJList jList;
         int camp = difference.getCamp();
         if (camp == Difference.CAMP_ORIGIN) {
             jList = frame.getOriginResultList();
