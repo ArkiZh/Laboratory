@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FolderCompareGUIAbsolute extends JFrame{
@@ -124,6 +125,24 @@ public class FolderCompareGUIAbsolute extends JFrame{
         //------------------------ Row start------------------------------
         // Result area. Origin
         originResultList.setVisibleRowCount(20);
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem synchorizeFilesItemOrigin = new JMenuItem("Synchronize selected files to the other side.");
+        synchorizeFilesItemOrigin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<Difference> selectedValues = originResultList.getSelectedValuesList();
+                String originDir = originDirText.getText();
+                String backupDir = backupDirText.getText();
+                // TODO
+                System.out.println("Copy from " + originDir + " to " + backupDir);
+                System.out.println("Files: ");
+                for (Difference d : selectedValues) {
+                    System.out.println(d.getFileInfo().getCanonicalPath());
+                }
+            }
+        });
+        popupMenu.add(synchorizeFilesItemOrigin);
+        originResultList.setComponentPopupMenu(popupMenu);
 
         originResultScrollPane.setViewportView(originResultList);
         originResultScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -253,28 +272,7 @@ public class FolderCompareGUIAbsolute extends JFrame{
         }
 
         private void initListener() {
-            JPopupMenu popupMenu = new JPopupMenu();
-            JMenuItem copyPathButton = new JMenuItem("Copy canonical path");
-            JMenuItem synchorizeFilesButton = new JMenuItem("Synchronize selected files to the other side.");
-            popupMenu.add(copyPathButton);
-            popupMenu.add(synchorizeFilesButton);
-            this.setComponentPopupMenu(popupMenu);
-            /* This also work:
-            this.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (e.isPopupTrigger()) {
-                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
-                    }
-                }
 
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    if (e.isPopupTrigger()) {
-                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
-                    }
-                }
-            });*/
         }
 
         private void initCellRender() {
