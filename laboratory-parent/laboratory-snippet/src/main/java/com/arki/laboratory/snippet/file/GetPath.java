@@ -1,4 +1,4 @@
-package com.arki.laboratory.snippet;
+package com.arki.laboratory.snippet.file;
 
 import org.junit.Test;
 
