@@ -13,7 +13,8 @@ From https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_sing
         <version>6.0.13.Final</version>
     </dependency>`
 
-Hibernate Validator requires an implementation of the Unified Expression Language (JSR 341) for evaluating dynamic expressions in constraint violation messages (see Section 4.1, “Default message interpolation”):
+Hibernate Validator requires an implementation of the Unified Expression Language (JSR 341) 
+for evaluating dynamic expressions in constraint violation messages (see Section 4.1, “Default message interpolation”):
 
     <dependency>
         <groupId>org.glassfish</groupId>
@@ -21,7 +22,9 @@ Hibernate Validator requires an implementation of the Unified Expression Languag
         <version>3.0.1-b09</version>
     </dependency>
 
-Bean Validation defines integration points with CDI (Contexts and Dependency Injection for Java TM EE, JSR 346). If your application runs in an environment which does not provide this integration out of the box, you may use the Hibernate Validator CDI portable extension by adding the following Maven dependency to your POM:
+Bean Validation defines integration points with CDI (Contexts and Dependency Injection for Java TM EE, JSR 346). 
+If your application runs in an environment which does not provide this integration out of the box, 
+you may use the Hibernate Validator CDI portable extension by adding the following Maven dependency to your POM:
 
     <dependency>
         <groupId>org.hibernate.validator</groupId>
@@ -40,7 +43,7 @@ Bean Validation defines integration points with CDI (Contexts and Dependency Inj
         + When validating byte code enhanced objects, property level constraints
           should be used, because the byte code enhancing library won’t be able to
           determine a field access via reflection.
-    1. property constraints
+    2. property constraints
         + The property’s getter method has to be annotated, not its setter. That way
           also read-only properties can be constrained which have no setter method.
         + When using property level constraints property access strategy is used to access the value to be
@@ -48,11 +51,11 @@ Bean Validation defines integration points with CDI (Contexts and Dependency Inj
         + It is recommended to stick either to field or property annotations within one
           class. It is not recommended to annotate a field and the accompanying
           getter method as this would cause the field to be validated twice.
-    1. container element constraints
-        + This requires that ElementType.TYPE_USE is specified via @Target in the constraint
+    3. container element constraints
+        + This requires that `ElementType.TYPE_USE` is specified via `@Target` in the constraint
           definition. As of Bean Validation 2.0, built-in Bean Validation as well as Hibernate Validator
-          specific constraints specify ElementType.TYPE_USE and can be used directly in this context.
-        + 支持Set List Map Optional
+          specific constraints specify `ElementType.TYPE_USE` and can be used directly in this context.
+        + 支持`Set List Map Optional`
         
               private Set<@ValidPart String> parts = new HashSet<>();
               private List<@ValidPart String> parts = new ArrayList<>();
@@ -62,11 +65,205 @@ Bean Validation defines integration points with CDI (Contexts and Dependency Inj
         + Can custom container types  
           A ValueExtractor must be registered for the custom type allowing to retrieve the value(s) to validate.
          
+    4. class constraints  
+    A constraint can also be placed on the class level. In this case not a single
+    property is subject of the validation but the complete object. Class-level constraints are useful if
+    the validation depends on a correlation between several properties of an object.
+    5. Constraint inheritance  
+    When a class implements an interface or extends another class, all constraint annotations
+    declared on the super-type apply in the same manner as the constraints specified on the class itself.  
+    Constraint annotations are aggregated if methods are overridden.
+    6. Object graphs  
+    The Bean Validation API does not only allow to validate single class instances but also complete
+    object graphs (*cascaded validation*). To do so, just annotate a field or property representing a
+    reference to another object with `@Valid`.
+2. Validating bean constraints
+    1. Obtaining a `Validator` instance  
+    The default way to get a validator is :
     
-    1. class constraints
+            ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+            Validator validator = validatorFactory.getValidator();
+            
+        In this way, classes in package `javax.validation` will scan the context ClassLoader 
+        to load classes which implement`ValidationProvider` interface, the `HibernateValidator` will be loaded.
+    2. Validator methods
     
-1. Validating bean constraints
-
+           // Validator methods test.
+           // All return: Set<ConstraintViolation<T>>
+           Validator validator = validatorFactory.getValidator();
+           // Validate the bean.
+           validator.validate(carFieldLevel);
+           // Validate the property.
+           validator.validateProperty(carFieldLevel,"manufacturer");
+           // Validate whether the value is valid for the specific class property.
+           validator.validateValue(CarFieldLevel.class, "seatCount", 1);
+           
+    3. Constraint violations  
+    Determine the case of the validation failure.
+    
+3. Declaring and validating method constraints  
+   As of Bean Validation 1.1, constraints can not only be applied to JavaBeans and their properties,
+   but also to the parameters and return values of the methods and constructors of any Java type.
+   That way Bean Validation constraints can be used to specify
+   + the preconditions that must be satisfied by the caller before a method or constructor may
+     be invoked (by applying constraints to the parameters of an executable)
+   + the postconditions that are guaranteed to the caller after a method or constructor
+     invocation returns (by applying constraints to the return value of an executable)
+   1. Validate each single parameter  
+      *Declare the annotation before each annotation.*
+   
+          public boolean rentCar(@NotNull Customer customer, 
+                                 @NotNull @FutureOrPresent Date startDate, 
+                                 @Min(1) int durationInDays) {
+              return false;
+          }
+   
+   2. Validate cross parameter constraints  
+      *Declare the annotation at method or constructor level.*
+      
+          @LuggageCountMatchesPassengerCount(piecesOfLuggagesPerPassenger = 2)
+          public void load(int passengerCount, int luggageCount){
+              ...
+          }
+       
+      Since return value constraints and cross-parameter constraints are both declared on the method level,
+      the constraint target is configured in the `ConstraintValidator` implementation using the `@SupportedValidationTarget` annotation.
+       
+          @SupportedValidationTarget(ValidationTarget.PARAMETERS)
+          public class LuggageCountMatchesPassengerCountValidator implements ConstraintValidator<LuggageCountMatchesPassengerCount, Object[]> {
+              private int piecesOfLuggagesPerPassenger;
+          
+              @Override
+              public void initialize(LuggageCountMatchesPassengerCount constraintAnnotation) {
+                  this.piecesOfLuggagesPerPassenger = constraintAnnotation.piecesOfLuggagesPerPassenger();
+              }
+          
+              @Override
+              public boolean isValid(Object[] value, ConstraintValidatorContext context) {
+                  int passengerCount = (int) value[0];
+                  int luggageCount = (int) value[1];
+                  return luggageCount <= passengerCount * piecesOfLuggagesPerPassenger;
+              }
+          }
+      
+      In some cases a constraint can be applied to an executable’s parameters (i.e. it is a crossparameter
+      constraint), but also to the return value. One example for this are custom constraints
+      which allow to specify validation rules using expression or script languages.
+      Such constraints must define a member `validationAppliesTo()` which can be used at
+      declaration time to specify the constraint target.  For example:   
+      `validationAppliesTo = ConstraintTarget.PARAMETERS`: Apply the constraint to an executable’s parameters.  
+      `ConstraintTarget.RETURN_VALUE`:  Apply the constraint to the executable return value.
+       
+          @ELAssert(expression = "...", validationAppliesTo = ConstraintTarget.PARAMETERS)
+          public Car buildCar(List<Part> parts) {
+              //...
+              return null;
+          }
+          @ELAssert(expression = "...", validationAppliesTo = ConstraintTarget.RETURN_VALUE)
+          public Car paintCar(int color) {
+              //...
+              return null;
+          }
+       
+   3. Validate return value  
+      *Declare the annotation at method or constructor level.*
+      
+          //Any newly created RentalStation object must satisfy the @ValidRentalStation constraint
+          @ValidRentalStation 
+          public RentalStation() {
+              //...
+          }
+      
+          @AssertTrue
+          public boolean rentCar(Customer customer, Date startDate, int durationInDays) {
+              System.out.println("You can rent car.");
+              return false;
+          }
+      
+   4. Cascaded validation  
+      *Similar to the cascaded validation of JavaBeans properties, When validating a parameter or return value annotated with @Valid,
+      the constraints declared on the parameter or return value object are validated as well.*  
+      In particular, `null` values are ignored during cascaded validation (naturally this can’t happen
+      during constructor return value validation) and cascaded validation is performed recursively, i.e.
+      if a parameter or return value object which is marked for cascaded validation itself has
+      properties marked with `@Valid`, the constraints declared on the referenced elements will be
+      validated as well.
+      
+   5. Method constraints in inheritance hierarchies
+      + The preconditions to be satisfied by the caller of a method may not be strengthened in subtypes.
+      + The postconditions guaranteed to the caller of a method may not be weakened in subtypes.
+      + 即：有继承关系时，参数校验的约束只能定义在父类或接口里；  
+        返回值校验约束既可以定义在父类或接口上，也可以定义在自身上，都会起作用。
+      
+4. Interpolating constraint error messages
+    1. Message parameters are string literals enclosed in {}, while message expressions are string literals enclosed in ${}.  
+    The following algorithm is applied during method interpolation:
+        1. Resolve any message parameters by using them as key for the resource bundle
+          ValidationMessages. If this bundle contains an entry for a given message parameter, that
+          parameter will be replaced in the message with the corresponding value from the bundle.
+          This step will be executed recursively in case the replaced value again contains message
+          parameters. The resource bundle is expected to be provided by the application developer,
+          e.g. by adding a file named `ValidationMessages.properties` to the classpath. You can also
+          61
+          create localized error messages by providing locale specific variations of this bundle, such
+          as `ValidationMessages_en_US.properties`. By default, the JVM’s default locale
+          (`Locale#getDefault()`) will be used when looking up messages in the bundle.
+        2. Resolve any message parameters by using them as key for a resource bundle containing the
+           standard error messages for the built-in constraints as defined in *Appendix B of the Bean
+           Validation specification*. In the case of Hibernate Validator, this bundle is named
+           `org.hibernate.validator.ValidationMessages`. If this step triggers a replacement,
+           step 1 is executed again, otherwise step 3 is applied. 
+        3. Resolve any message parameters by replacing them with the value of the constraint
+           annotation member of the same name. This allows to refer to attribute values of the
+           constraint (e.g. `Size#min()`) in the error message (e.g. `"must be at least ${min}"`).
+        4. Resolve any message expressions by evaluating them as expressions of the Unified
+           Expression Language (Unified EL).
+    2. Special characters  
+    Since the characters {, } and $ have a special meaning in message descriptors, 
+    they need to be escaped if you want to use them literally. The following rules apply:
+        + \\{ is considered as the literal {
+        + \\} is considered as the literal }
+        + \\$ is considered as the literal $
+        + \\\\ is considered as the literal \\
+    3. Interpolation with message expressions  
+    As of Hibernate Validator 5 (Bean Validation 1.1) it is possible to use the Unified Expression
+    Language (as defined by *JSR 341*) in constraint violation messages. This allows to define error
+    messages based on conditional logic and also enables advanced formatting options. The
+    validation engine makes the following objects available in the EL context:
+        + the attribute values of the constraint mapped to the attribute names
+        + the currently validated value (property, bean, method parameter etc.) under the name validatedValue
+        + a bean mapped to the name formatter exposing the var-arg method `format(String format, Object… args)` 
+        which behaves like `java.util.Formatter.format(String format, Object… args)`.  
+    
+       For example:
+       
+           public class CarMessageInterpolation {
+               @NotNull
+               private String manufacturer;
+               @Size(
+                       min = 2,
+                       max = 14,
+                       message = "The license plate '${validatedValue}' must be between {min} and {max} characters long"
+               )
+               private String licensePlate;
+               @Min(
+                       value = 2,
+                       message = "There must be at least {value} seat${value > 1 ? 's' : ''}"
+               )
+               private int seatCount;
+               @DecimalMax(
+                       value = "350",
+                       message = "The top speed ${formatter.format('%1$.2f',validatedValue)} is higher than {value}"
+               )
+               private double topSpeed;
+               @DecimalMax(value = "100000", message = "Price must not be higher than ${value}")
+               private BigDecimal price;
+               ...
+           }
+    4. Custom message interpolation  **TODO**
+5. **TODO**
+        
+        
 << [访问 Wow!Ubuntu](http://wowubuntu.com)
 
 **NOTE:** This is Simplelified  Chinese Edition Document of Markdown Syntax. If you are seeking for English Edition Document. Please refer to [Markdown: Syntax][eng-doc].
