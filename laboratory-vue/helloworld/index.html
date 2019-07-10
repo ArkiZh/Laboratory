@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Hello world</title>
     <style>
+        h5{
+            color:#e65100;
+        }
         .redColor{
             color: red;
+        }
+        .liked{
+            background: pink;
         }
     </style>
 </head>
@@ -43,6 +49,119 @@
          <!--自定义的方法可传参，传参时如：v-on:click="onClickMethod('abc')"；不传参时也可写v-on:click="onClickMethod()"-->
          v-on test: {{buttonName}} {{mouseAction}}
      </button>
+ </div>
+
+ <div id="vueDiv4">
+     <h5>v-model:</h5>
+     <input type="text" v-model="name">正常加载v-model<br>
+     <input type="text" v-model.lazy="name">惰性加载v-model.lazy<br>
+     <input type="text" v-model.trim="name">去空格v-model.trim<br>
+     内容：<pre>[{{name}}]</pre><br>
+
+     <input type="text" v-model.number="age">转数字v-model.number [{{age}}]<br>
+
+     <label>男<input v-model="gender" type="radio" value="male"></label>
+     <label>女<input v-model="gender" type="radio" value="female"></label>
+     内容：[{{gender}}]<br>
+
+     <label>乒乓球<input v-model="hobby" type="checkbox" value="Ping-pong"></label>
+     <label>滑冰<input v-model="hobby" type="checkbox" value="Skate"></label>
+     内容：[{{hobby}}]<br>
+
+     <textarea v-model="article"></textarea>内容：[{{article}}]<br>
+
+     你来自哪里？
+     <select v-model="home">
+         <option value="Mars">火星</option>
+         <option value="Earth">地球</option>
+     </select>
+     内容：[{{home}}]<br>
+     你要去哪里？
+     <select v-model="destination" multiple="multiple">
+         <option value="Moon">月球</option>
+         <option value="Sun">太阳</option>
+         <option value="Sea">海洋</option>
+     </select>
+     内容：[{{destination}}]<br>
+ </div>
+ <div id="vueDiv5">
+     <h5>控制流指令v-if:</h5>
+     选择角色：
+     <select v-model="currentRole">
+         <option v-for="role in roles">{{role}}</option>
+     </select><br>
+     <div v-if="currentRole=='员工'">恭喜你，放假了！</div>
+     <div v-else-if="currentRole=='HR'">今天多招点人！</div>
+     <div v-else-if="currentRole=='管理员'">我是管理员！</div>
+ </div>
+ <div id="vueDiv6">
+     <h5>计算属性computed</h5>
+     <table border="1">
+         <thead>
+         <th>科目</th>
+         <th>分数</th>
+         </thead>
+         <tbody>
+         <tr v-for="scoreInfo in scoreInfoArray">
+             <td>{{scoreInfo.course}}</td>
+             <td>{{scoreInfo.score}}</td>
+         </tr>
+         <!--data中引用不到computed中的属性-->
+         <!--<tr v-for="statistics in statisticsArray">
+             <td>{{statistics.category}}</td>
+             <td>{{statistics.score}}</td>
+         </tr>-->
+         <tr>
+             <td>总分</td>
+             <td>{{sum}}</td>
+         </tr>
+         <tr>
+             <td>平均分</td>
+             <td>{{average}}</td>
+         </tr>
+         </tbody>
+     </table>
+ </div>
+ <div id="vueDiv7">
+     <h5>全局及局部组件</h5>
+     <alert_public></alert_public>
+     <alert_private/>
+ </div>
+ <div id="vueDiv8">
+     <h5>引用页面模板到组件</h5>
+     <like></like>
+ </div>
+ <template id="like_component_template">
+     <button :class='{liked:liked_flag}' @click='on_click_toggle'>
+         赞{{like_count}}
+     </button>
+ </template>
+
+ <div id="vueDiv9">
+     <h5>页面向组件内部传参，父->子通信：子中用props指定父可以拿哪些自定义属性来传参</h5>
+     <user_link username="arki"></user_link>
+ </div>
+
+ <div id="vueDiv10">
+     <h5>子->父通信：子用$emit触发父中的事件并传参</h5>
+     <balance_block></balance_block>
+ </div>
+
+ <div id="vueDiv11">
+     <h5>同级组件之间的通信：通过公共的Vue对象进行触发事件（$emit）,监听事件（$on）。适用于任意组件间通信</h5>
+     <keyboard></keyboard>
+     <screen></screen>
+ </div>
+
+ <div id="vueDiv12">
+     <h5>过滤器|</h5>
+     <input v-model="price">{{price | currency("dollar")}}<br>
+     <input v-model="length">mm等于{{length | lengthTransfer("m")}}
+ </div>
+
+ <div id="vueDiv13">
+     <h5>自定义指令Vue.directive</h5>
+     <div v-pin="pinned"><button @click="pinned=!pinned">点击钉住我/点击取消钉住</button></div>
  </div>
 
  <script src="node_modules/vue/dist/vue.js"></script>
