@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,9 +138,22 @@ public class FolderCompareGUIAbsolute extends JFrame{
                 // TODO
                 System.out.println("Copy from " + originDir + " to " + backupDir);
                 System.out.println("Files: ");
+                String[] relativePaths = new String[selectedValues.size()];
+                int i = 0;
                 for (Difference d : selectedValues) {
-                    System.out.println(d.getFileInfo().getCanonicalPath());
+                    String canonicalPath = d.getFileInfo().getCanonicalPath();
+                    String originDirCanonical = null;
+                    try {
+                        originDirCanonical = new File(originDir).getCanonicalPath();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                        originDirCanonical = new File(originDir).getAbsolutePath();
+                    }
+                    String relativePath = canonicalPath.substring(originDirCanonical.length());
+                    System.out.println("Origin path -> relative path: " + relativePath);
+                    relativePaths[i++] = relativePath;
                 }
+                boolean[] results = Utils.copyFileByPath(originDir, backupDir, relativePaths);
             }
         });
         popupMenu.add(synchorizeFilesItemOrigin);
