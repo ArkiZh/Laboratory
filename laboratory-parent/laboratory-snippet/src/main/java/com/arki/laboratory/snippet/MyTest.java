@@ -18,15 +18,6 @@ import java.util.regex.Pattern;
 
 
 /**
- *
- * @(#) MyTest.java
- * @Package 
- * 
- * Copyright © Singlewindow Corporation. All rights reserved.
- *
- */
-
-/**
  *  Description : 
  * 
  *  @author:  k
@@ -249,5 +240,68 @@ public class MyTest {
 			i++;
 		}
 		System.out.println(i);
+	}
+
+	@Test
+	public void testMajorityNum() {
+		int[] nums = new int[]{1, 2, 3, 2, 2, 2};
+		Map<Integer,Integer> map = new HashMap<>();
+		for(int i=0;i<nums.length;i++){
+			if(map.containsKey(nums[i])){
+				int count = map.get(nums[i]);
+				map.put(nums[i],++count);
+				if(count>nums.length/2){
+					System.out.println(nums[i]);
+				}
+			}else{
+				map.put(nums[i],1);
+			}
+		}
+	}
+
+	@Test
+	public void testSeacrhMatrix(){
+		//保证当i1+j1>i2+j2时候：a[i1][j1] >a[i2][j2]
+		int[][] matrix = new int[][]{
+				{1, 2, 4},
+				{3, 5, 7},
+				{6, 8, 9}};
+		//int[][] matrix = new int[][]{{-1},{-1}};
+		int target = 7;
+		int m = matrix.length-1;
+		int n = matrix[0].length-1;
+		int max = m+n;
+		int left = 0;
+		int right = max;
+		while (true) {
+			int i = (left+right)/2;
+			int v = matrix[i <= m ? i : m][i <= m ? 0 : i-m];
+			if (v > target) {
+				right = i;
+			} else if (v < target) {
+				left = i;
+			} else {
+				System.out.println(true);
+				return;
+			}
+			if (right - left <= 1) {
+				break;
+			}
+		}
+		// Search left -> right
+		for (int t = left; t <= right; t++) {
+			for (int x = t-n>0?t-n:0; x<=m&&x<=t; x++) {
+				if (matrix[x][t - x] == target) {
+					System.out.println(true);
+					return;
+				}
+			}
+		}
+		System.out.println(false);
+	}
+
+	@Test
+	public void temp() {
+		System.out.println(3/2);
 	}
 }
