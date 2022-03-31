@@ -17,7 +17,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <spring-webmvc.version>4.3.14.RELEASE</spring-webmvc.version>
+        <spring-webmvc.version>5.3.18</spring-webmvc.version>
         <spring-tx.version>4.3.14.RELEASE</spring-tx.version>
     </properties>
 
